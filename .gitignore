@@ -1,0 +1,8 @@
+app/views/templates
+public
+vendor
+tests
+
+*.txt
+*.sql
+*mwb
