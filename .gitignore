@@ -1,0 +1,10 @@
+app/views/templates
+public
+vendor
+tests
+docs
+
+*.txt
+*.sql
+*.mwb
+.DS_Store
