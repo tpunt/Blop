@@ -34,24 +34,24 @@ class Router
     }
 
     /**
-     * Checks to ensure the route name ($key) is valid.
+     * Checks to ensure the route name is valid.
      *
-     * @param  string $key  The route name.
-     * @return bool         Whether the route exists or not.
+     * @param  string $routeName  The name of the route.
+     * @return bool               Whether the route exists or not.
      */
-    public function isValidRoute($key)
+    public function isValidRoute($routeName)
     {
-        return isset($this->routes[$key]);
+        return isset($this->routes[$routeName]);
     }
 
     /**
      * Gets the route's corresponding triad of components.
      *
-     * @param  string $key  The route name.
-     * @return array        The class names of the triad of components.
+     * @param  string $routeName  The name of the route.
+     * @return array              The class names of the triad of components.
      */
-    public function getTriad($key)
+    public function getTriad($routeName)
     {
-        return $this->routes[$key];
+        return $this->routes[$routeName];
     }
 }
