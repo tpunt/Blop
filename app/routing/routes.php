@@ -1,8 +1,14 @@
 <?php
 
 /**
+ * This file contains all information about the routes of the application.
+ *
  * Route format:
  * route_hame_here => [['ModelA', 'ModelB'], 'View', 'Controller'];
+ *
+ * @package  Blop/app/routing
+ * @author   Thomas Punt
+ * @license  MIT
  */
 
 return [
