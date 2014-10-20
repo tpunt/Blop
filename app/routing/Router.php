@@ -27,7 +27,9 @@ class Router
      */
     public function __construct($routesFile)
     {
-        // skip file validations for now
+        if(!is_readable($routesFile))
+            throw new \InvalidArgumentException('The routes.php file could not be read.');
+
         $this->routes = require $routesFile;
     }
 
