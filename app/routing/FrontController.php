@@ -57,7 +57,7 @@ class FrontController
     }
 
     /**
-     * Make sure each component name is uses a fully qualified namespace so that it can be instantiated.
+     * Make sure each component name uses a fully qualified namespace so that it can be instantiated.
      *
      * @param  array  $models      The names of the models.
      * @param  string $view        The name of the view.

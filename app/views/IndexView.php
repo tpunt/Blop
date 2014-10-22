@@ -4,17 +4,39 @@ namespace app\views;
 
 use app\models\DataAccessLayer\WebPageContentMapper as WebPageContentMapper;
 
+/**
+ * This is the view containing the binding logic for the 'Index' page (using the templates/index.tpl).
+ *
+ * @package  Blop/app/views
+ * @author   Thomas Punt
+ * @license  MIT
+ */
 class IndexView
 {
-    private $tplEngine = null;
-    private $pageContentMapper = null;
+    /**
+     * @var Twig_Environment|null     $tplEngine          The instance of the template engine.
+     * @var WebPageContentMapper|null $pageContentMapper  The instance of the WebPageContent data mapper.
+     */
+    private $tplEngine = null,
+            $pageContentMapper = null;
 
-    public function __construct(\Twig_Environment $tplEngine, WebPageContentMapper $pageContentMapper) // have a generic model for all tpls? binding logic problems with this?
+    /**
+     * Assigns the arguments to instance variables to be used by the render() method.
+     *
+     * @param Twig_Environment     $tplEngine          The instance of the template engine.
+     * @param WebPageContentMapper $pageContentMapper  The instance of the WebPageContent data mapper.
+     */
+    public function __construct(\Twig_Environment $tplEngine, WebPageContentMapper $pageContentMapper)
     {
         $this->tplEngine = $tplEngine;
         $this->pageContentMapper = $pageContentMapper;
     }
 
+    /**
+     * Contains all of the binding logic in order to render the index.tpl file.
+     *
+     * @return string  The rendered template.
+     */
     public function render()
     {
         $tpl = $this->tplEngine->loadTemplate('index.tpl');
