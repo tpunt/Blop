@@ -30,7 +30,7 @@ class WebPageContent
     }
 
     /**
-     * Validates and sets the user ID to an instance variable.
+     * Validates and sets the web page title to an instance variable.
      *
      * @param  string $webPageTitle      The title of the web page.
      * @throws InvalidArgumentException  Thrown if the page title is too short.
@@ -57,5 +57,30 @@ class WebPageContent
         array_push($this->webPageContent, $content);
     }
 
-    use MagicGetter;
+    /**
+     * Returns the web page title.
+     *
+     * The MagicGetter trait is not used here because getting the web page content requires
+     * the use of a generator (which the MagicGetter does not offer).
+     *
+     * @return string  The web page title.
+     */
+    public function getWebPageTitle()
+    {
+        return $this->webPageTitle;
+    }
+
+    /**
+     * Returns the web page content.
+     *
+     * A generator is used here so that we can automatically iterate over the array on sequential
+     * invocations of this function.
+     *
+     * @return string  Parts of the web page content.
+     */
+    public function getWebPageContent()
+    {
+        foreach($this->webPageContent as $content)
+            yield $content;
+    }
 }
