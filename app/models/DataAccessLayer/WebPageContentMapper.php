@@ -71,7 +71,7 @@ class WebPageContentMapper
         $pageContentQuery = $this->pdo->prepare('SELECT content FROM WebPageContent WHERE web_page = ?');
         $pageContentQuery->execute([$page]);
 
-        while($pageContent = $pageContentQuery->fetch(\PDO::FETCH_ASSOC)['page_content'])
+        while($pageContent = $pageContentQuery->fetch(\PDO::FETCH_ASSOC)['content'])
             $webPage->addWebPageContent($pageContent);
 
         return $webPage;
