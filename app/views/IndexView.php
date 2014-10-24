@@ -43,7 +43,8 @@ class IndexView
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
                      'baseURI' => 'http://lindseyspt.pro',
-                     'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle()];
+                     'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle(),
+                     'pageContent' => $this->pageContentMapper->getWebPage()->getWebPageContent()];
 
         return $tpl->render($bindings);
     }
