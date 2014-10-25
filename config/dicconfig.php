@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * This is the configuration file for Dice (a dependency injection container).
+ *
+ * @package  config
+ * @author   Thomas Punt
+ * @license  MIT
+ */
 function configureDICE(Dice\Dice $dice, array $config)
 {
 	$rulePDO = new Dice\Rule;
