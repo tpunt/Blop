@@ -1,17 +1,19 @@
 <?php
+
 use app\routing\FrontController as FrontController;
 use app\routing\Router as Router;
 use app\models\DataAccessLayer\RedisSessionHandler as RedisSessionHandler;
 
 // autoloaders
-require 'autoloader.php'; // try to get rid of this and just use Composer's autoloader
-$loader = require 'vendor/autoload.php';
+require __DIR__.'/autoloader.php'; // try to get rid of this and just use Composer's autoloader
+$loader = require __DIR__.'/vendor/autoload.php';
 
 // configurations
-$dbconfig = require './config/dbconfig.php';
-require './config/dicconfig.php';
+$dbconfig = require __DIR__.'/config/dbconfig.php';
+require __DIR__.'/config/dicconfig.php';
 $dic = new Dice\Dice;
 configureDICE($dic, ['dbconfig' => $dbconfig]);
+$globalBindings = require __DIR__.'/config/genconfig.php';
 
 $redis = new Redis();
 $redis->connect($dbconfig['redis']['host'], $dbconfig['redis']['port'], $dbconfig['redis']['timeout']);
@@ -29,8 +31,10 @@ if(isset($_GET['triad'])) {
     if(!empty($_GET['action']))
         $action = $_GET['action'];
 
-    // HTTP GET info
+    // other HTTP GET info
 }
+
+
 
 try {
     $twig = new Twig_Environment(new Twig_Loader_Filesystem('app/views/templates'));
@@ -42,7 +46,8 @@ try {
 
     // send out XML headers for HTML5 markup to be parsed as XHTML (to serve XHTML5)
     header('Content-Type: application/xhtml+xml');
-    echo $fc->render();
+
+    echo $fc->render($globalBindings);
 }catch(Exception $e) {
     die($e);
 }

@@ -121,10 +121,11 @@ class FrontController
     /**
      * Pass the rendered template from the view to the index page to be output.
      *
-     * @return string  The rendered template.
+     * @param array   $globalBindings  The information to be bound to every template.
+     * @return string                  The rendered template.
      */
-    public function render()
+    public function render(array $globalBindings = [])
     {
-        return $this->view->render();
+        return $this->view->render($globalBindings);
     }
 }

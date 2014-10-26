@@ -35,16 +35,16 @@ class RegisterView
     /**
      * Contains all of the binding logic in order to render the register.tpl file.
      *
-     * @return string  The rendered template.
+     * @param array   $globalBindings  The information to be bound to every template.
+     * @return string                  The rendered template.
      */
-    public function render()
+    public function render(array $globalBindings = [])
     {
         $tpl = $this->tplEngine->loadTemplate('register.tpl');
 
         $bindings = ['regError' => $this->userMapper->getError(),
-                     'loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
-                     'baseURI' => 'http://lindseyspt.pro'];
+                     'loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : '')];
 
-        return $tpl->render($bindings);
+        return $tpl->render(array_merge($bindings, $globalBindings));
     }
 }

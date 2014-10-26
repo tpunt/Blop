@@ -35,16 +35,16 @@ class AboutMeView
     /**
      * Contains all of the binding logic in order to render the aboutme.tpl file.
      *
-     * @return string  The rendered template.
+     * @param array   $globalBindings  The information to be bound to every template.
+     * @return string                  The rendered template.
      */
-    public function render()
+    public function render(array $globalBindings = [])
     {
         $tpl = $this->tplEngine->loadTemplate('aboutme.tpl');
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
-                     'baseURI' => 'http://lindseyspt.pro',
                      'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle()];
 
-        return $tpl->render($bindings);
+        return $tpl->render(array_merge($bindings, $globalBindings));
     }
 }
