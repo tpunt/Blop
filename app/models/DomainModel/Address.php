@@ -5,7 +5,7 @@ namespace app\models\DomainModel;
 // make full name lengths configurable?
 
 /**
- * This class encapsulates the business logic for an Address
+ * This class encapsulates the business logic for an address
  *
  * @package  Blop/app/models/DomainModel
  * @author   Thomas Punt
@@ -29,7 +29,7 @@ class Address
             $phoneNumber = '';
 
     /**
-     * Validate and set each of the properties.
+     * Validate and set each of the properties of an address.
      *
      * @param  string $fullName          The first and last name of the person.
      * @param  string $addressLine       The road name and number.

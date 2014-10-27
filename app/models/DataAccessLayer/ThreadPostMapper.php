@@ -55,9 +55,9 @@ class ThreadPostMapper
     /**
      * Gets a group of threads corresponding to the range of thread ID's specified.
      *
-     * @param int $from  The thread ID to begin fetching threads from
-     * @param int $to    The ending thread ID to fetch the threads to
-     * @return array     An array of ThreadPost objects containing thread information
+     * @param int $from  The thread ID to begin fetching threads from.
+     * @param int $to    The ending thread ID to fetch the threads to.
+     * @return array     An array of ThreadPost objects containing thread information.
      */
     public function getThreads($from = 0, $to = 10) // pagination: 10 posts/page | only specify a $from and make posts/page configurable?
     {
