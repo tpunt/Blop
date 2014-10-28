@@ -27,10 +27,10 @@ class ProductsView
      * Assigns the arguments to instance variables to be used by the render() method.
      *
      * @param Twig_Environment     $tplEngine          The instance of the template engine.
-     * @param WebPageContentMapper $pageContentMapper  The instance of the WebPageContent data mapper.
      * @param ProductMapper        $productMapper      The instance of the Product data mapper.
+     * @param WebPageContentMapper $pageContentMapper  The instance of the WebPageContent data mapper.
      */
-    public function __construct(\Twig_Environment $tplEngine, WebPageContentMapper $pageContentMapper, ProductMapper $productMapper)
+    public function __construct(\Twig_Environment $tplEngine, ProductMapper $productMapper, WebPageContentMapper $pageContentMapper)
     {
         $this->tplEngine = $tplEngine;
         $this->pageContentMapper = $pageContentMapper;

@@ -24,17 +24,18 @@ session_start();
 
 $route = '';
 $action = '';
+$get = '';
 
 if(isset($_GET['triad'])) {
     $route = $_GET['triad'];
 
-    if(!empty($_GET['action']))
+    if(isset($_GET['action'])) {
         $action = $_GET['action'];
 
-    // other HTTP GET info
+        if(isset($_GET['get']))
+            $get = $_GET['get'];
+    }
 }
-
-
 
 try {
     $twig = new Twig_Environment(new Twig_Loader_Filesystem('app/views/templates'));
@@ -42,7 +43,7 @@ try {
     $router = new Router('app/routing/routes.php');
 
     // pass through GET and POST data? Or just access that data directly in the invoked classes?
-    $fc = new FrontController($dic, $twig, $router, $route, $action);
+    $fc = new FrontController($dic, $twig, $router, $route, $action, $get);
 
     // send out XML headers for HTML5 markup to be parsed as XHTML (to serve XHTML5)
     header('Content-Type: application/xhtml+xml');

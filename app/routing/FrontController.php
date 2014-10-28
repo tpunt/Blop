@@ -25,28 +25,32 @@ class FrontController
      * @var string|               $action     The controller action being invoked.
      * @var Twig_Environment|null $tplEngine  The templating engine being used.
      * @var string|               $route      The route being taken within the application.
+     * @var string|               $get        The GET data for the page.
      */
     private $view = null,
             $dic = null,
             $action = '',
             $tplEngine = null,
-            $route = '';
+            $route = '',
+            $get = '';
 
     /**
      * Assigns the arguments to the fields, validates the route, and initiates the corresponding triad.
      *
      * @param  Dice             $dic        The dependency injection container to create object graphs.
-     * @param  Trig_Environment $tplEngine  The templating engine to parse the tpl files in views/templates.
+     * @param  Twig_Environment $tplEngine  The templating engine to parse the tpl files in views/templates.
      * @param  Router           $router     The router to validate the route and get the corresponding triad.
      * @param  string           $route      The route being taken within the application.
      * @param  string           $action     The controller action being invoked.
+     * @param  string           $get        The GET data for the web page.
      * @throws Exception                    Any exception being raised in the application.
      */
-    public function __construct(Dice $dic, \Twig_Environment $tplEngine, Router $router, $route, $action)
+    public function __construct(Dice $dic, \Twig_Environment $tplEngine, Router $router, $route, $action, $get)
     {
         $this->dic = $dic;
         $this->tplEngine = $tplEngine;
         $this->action = $action;
+        $this->get = $get;
 
         if(!$router->isValidRoute($route))
             $this->route = self::DEFAULT_ROUTE;
@@ -107,8 +111,12 @@ class FrontController
             if(!empty($controller)) {
                 $controller = new $controller(...$m);
 
-                if(!empty($this->action) && method_exists($controller, $this->action))
-                    $controller->{$this->action}();
+                if(!empty($this->action)) {
+                    if(method_exists($controller, $this->action))
+                        $controller->{$this->action}($this->get);
+                    else
+                        throw new \InvalidArgumentException('Invalid action');
+                }
             }
         }catch(\InvalidArgumentException $e) {
             header("Location: http://lindseyspt.pro/{$this->route}"); // don't hard-code the URI

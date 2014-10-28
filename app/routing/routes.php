@@ -17,7 +17,7 @@ return [
     'login' => [['UserMapper'], 'LoginView', 'LoginController'],
     'register' => [['UserMapper'], 'RegisterView', 'RegisterController'],
     'account' => [['UserMapper'], 'AccountView', 'AccountController'],
-    'products' => [['WebPageContentMapper', 'ProductMapper'], 'ProductsView', ''],
+    'products' => [['ProductMapper', 'WebPageContentMapper'], 'ProductsView', 'ProductsController'],
     'showthreads' => [['ThreadPostMapper'], 'ThreadsView', 'ThreadsController'],
     'showthread' => [['ThreadPostMapper'], 'ThreadView', 'ThreadController'],
     'newthread' => [['ThreadPostMapper'], 'NewThreadPostView', 'NewThreadPostController']

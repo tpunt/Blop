@@ -3,6 +3,7 @@
 namespace app\models\DataAccessLayer;
 
 use app\models\DomainModel\Product as Product;
+use app\models\DomainModel\Pagination as Pagination;
 
 /**
  * This class handles products and their information.
@@ -17,9 +18,11 @@ use app\models\DomainModel\Product as Product;
 class ProductMapper
 {
     /**
-     * @var PDO|null $pdo  The PDO object.
+     * @var PDO|null        $pdo         The PDO object.
+     * @var Pagination|null $pagination  The Pagination domain model object.
      */
-    private $pdo = null;
+    private $pdo = null,
+            $pagination = null;
 
     /**
      * Assign the PDO object to an object instance.
@@ -32,22 +35,39 @@ class ProductMapper
     }
 
     /**
+     * Creates and sets a new Pagination object to the pagination instance variable.
+     *
+     * @param int $pageNo  The page number for pagination.
+     */
+    public function newPagination($pageNo)
+    {
+        $elementCount = $this->pdo->query('SELECT COUNT(*) FROM products')->fetch(\PDO::FETCH_NUM)[0];
+
+        $this->pagination = new Pagination('Products', $elementCount, $pageNo);
+    }
+
+    /**
      * Gets a group of products corresponding to the range of product ID's specified.
      *
-     * @param int $from  The product ID to begin fetching products from.
-     * @param int $to    The ending product ID to fetch the products to.
      * @return array     An array of Product objects containing thread information.
      */
-    public function getProducts($from = 0, $to = 10) // pagination: 10 products/page | only specify a $from and make n/page configurable?
+    public function getProducts()
     {
-        // validate $from/$to later
+        $products = [];
+
+        if(!$this->pagination)
+            $this->newPagination(1);
+
+        if(!$this->pagination->getValidity())
+            return $products;
+
+        $from = $this->pagination->getFrom();
+        $to = $this->pagination->getTo();
 
         $productsQuery = $this->pdo->query("SELECT product_id, product_name, stock_level, price, preview_photo
                                             FROM products WHERE product_id BETWEEN {$from} AND {$to}");
 
-        // validate response of $productsQuery
-
-        $products = [];
+        // validate response of $productsQuery ?
 
         while($p = $productsQuery->fetch(\PDO::FETCH_ASSOC))
             array_push($products, new Product($p['product_name'], $p['stock_level'], $p['price'], $p['preview_photo'], $p['product_id']));

@@ -4,4 +4,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
 
-RewriteRule ^([a-z-A-Z0-9]+)(/([a-z-A-Z0-9]+)?)?$ index.php?triad=$1&action=$3 [L]
+RewriteRule ^(([a-zA-Z0-9]+)?(/([a-zA-Z0-9]+)?(/([a-zA-Z0-9]+)?)?)?)?$ index.php?triad=$2&action=$4&get=$6 [L]
