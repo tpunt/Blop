@@ -24,7 +24,7 @@ class Pagination
      * @var int|0     $from          The element number to start fetching results from.
      */
     private $usage = '',
-            $usages = ['products'], // load in from config
+            $usages = ['products', 'posts'], // load in from config
             $pageNo = 1,
             $perPageNo = 1, // load in from config file
             $elementCount = 0,

@@ -3,6 +3,7 @@
 namespace app\models\DataAccessLayer;
 
 use app\models\DomainModel\Post as Post;
+use app\models\DomainModel\Pagination as Pagination;
 
 /**
  * This class handles the new and already created blog posts.
@@ -17,9 +18,11 @@ use app\models\DomainModel\Post as Post;
 class PostMapper
 {
     /**
-     * @var PDO|null $pdo  The PDO object.
+     * @var PDO|null        $pdo         The PDO object.
+     * @var Pagination|null $pagination  The Pagination domain model object.
      */
-    private $pdo = null;
+    private $pdo = null,
+            $pagination = null;
 
     /**
      * Assign the PDO object to an object instance.
@@ -29,6 +32,46 @@ class PostMapper
     public function __construct(\PDO $pdo) // include a CommentMapper here?
     {
         $this->pdo = $pdo;
+    }
+
+    /**
+     * Creates and sets a new Pagination object to the pagination instance variable.
+     *
+     * @param int $pageNo  The page number for pagination.
+     */
+    public function newPagination($pageNo)
+    {
+        $elementCount = $this->pdo->query('SELECT COUNT(*) FROM Posts')->fetch(\PDO::FETCH_NUM)[0];
+
+        $this->pagination = new Pagination('posts', $elementCount, $pageNo);
+    }
+
+    /**
+     * Gets a group of posts corresponding to the range of post ID's specified via pagination.
+     *
+     * @return array  An array of Post objects containing individual post information.
+     */
+    public function getPosts()
+    {
+        $posts = [];
+
+        if(!$this->pagination)
+            $this->newPagination(1);
+
+        if(!$this->pagination->getValidity())
+            return $posts;
+
+        $from = $this->pagination->getFrom();
+        $perPageNo = $this->pagination->getPerPageNo();
+
+        $postsQuery = $this->pdo->query("SELECT post_id, post_title, LEFT(post_content, 50) as excerpt, post_date, user_id
+                                         FROM Posts LIMIT {$from}, {$perPageNo}");
+
+        while($p = $postsQuery->fetch(\PDO::FETCH_ASSOC))
+            array_push($posts,
+                       new Post($p['post_title'], $p['excerpt'], $p['user_id'], new \DateTime($p['post_date']), $p['post_id']));
+
+        return $posts;
     }
 
     /**
@@ -54,23 +97,6 @@ class PostMapper
         // add comments here.
 
         return $post;
-    }
-
-    /**
-     * Gets a group of posts corresponding to the range of post ID's specified via pagination.
-     *
-     * @return array  An array of Post objects containing individual post information.
-     */
-    public function getPosts()
-    {
-        $posts = [];
-
-        $postsQuery = $this->pdo->query("SELECT post_id, post_title, LEFT(post_content, 50) as post_content, post_date, user_id FROM Posts");
-
-        while($p = $postsQuery->fetch(\PDO::FETCH_ASSOC))
-            array_push($posts, new Post($p['post_title'], $p['post_content'], $p['user_id'], new \DateTime($p['post_date']), $p['post_id']));
-
-        return $posts;
     }
 
     /**
