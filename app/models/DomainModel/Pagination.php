@@ -15,23 +15,31 @@ namespace app\models\DomainModel;
 class Pagination
 {
     /**
-     * @var string| $webPageTitle    The title of the web page.
-     * @var array|  $webPageContent  The content of all dynamic elements of a web page.
+     * @var string|   $usage         The route this pagination object is attached to.
+     * @var array|[]  $usages        The routes pagination can be used for.
+     * @var int|1     $pageNo        The page number to load.
+     * @var int|10    $perPageNo     The number of elements to load per page.
+     * @var int|0     $elementCount  The number of records in the system that can be fetched.
+     * @var bool|true $validity      Whether the pagination object is valid.
+     * @var int|0     $from          The element number to start fetching results from.
+     * @var int|0     $to            The element number to finish fetching results to.
      */
     private $usage = '',
-            $usages = ['Products'], // load in from config
+            $usages = ['products'], // load in from config
             $pageNo = 1,
-            $perPageNo = 2, // load in from config file
+            $perPageNo = 10, // load in from config file
             $elementCount = 0,
             $validity = true,
             $from = 0,
             $to = 0;
 
     /**
-     * Sets the web page title via a private validation function.
+     * Validates and sets the route the pagination is being used for, along with
      *
-     * @param  string $webPageTitle      The title of the web page.
-     * @throws InvalidArgumentException  Thrown if the page title being set is too short.
+     * @param  string $usage             The title of the web page.
+     * @param  int    $elementCount      The number of records in the system that can be fetched.
+     * @param  int    $pageNo            The page number.
+     * @throws InvalidArgumentException  Thrown if the usage specified is invalid.
      */
     public function __construct($usage, $elementCount, $pageNo)
     {
@@ -41,10 +49,10 @@ class Pagination
     }
 
     /**
-     * Validates and sets the web page title to an instance variable.
+     * Validates and sets the usage (according to route name).
      *
-     * @param  string $webPageTitle      The title of the web page.
-     * @throws InvalidArgumentException  Thrown if the page title is too short.
+     * @param  string $usage             The title of the web page.
+     * @throws InvalidArgumentException  Thrown if the usage specified is invalid.
      */
     private function setUsage($usage)
     {
@@ -55,9 +63,9 @@ class Pagination
     }
 
     /**
-     * Validates and sets the web page title to an instance variable.
+     * Sets the element count to an instance variable.
      *
-     * @param  string $webPageTitle      The title of the web page.
+     * @param  string $eCount  The number of records in the system that can be fetched.
      */
     private function setElementCount($eCount)
     {
@@ -65,10 +73,12 @@ class Pagination
     }   
 
     /**
-     * Validates and sets the web page title to an instance variable.
+     * Validates and sets the page number to an instance variable.
      *
-     * @param  string $webPageTitle      The title of the web page.
-     * @throws InvalidArgumentException  Thrown if the page title is too short.
+     * The validity instance variable is set to false (denoting that the pagination object
+     * is invalid) if the page specified is out of range.
+     *
+     * @param  string $pageNo  The page number.
      */
     private function setPageNo($pageNo)
     {
@@ -86,6 +96,10 @@ class Pagination
 
     }
 
+    /**
+     * Sets the to and from instance variables by calculating them from the pageNo and perPageNo
+     * instance variables;
+     */
     private function calculateRange()
     {
         $this->to = $this->pageNo * $this->perPageNo;

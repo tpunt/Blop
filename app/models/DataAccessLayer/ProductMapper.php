@@ -43,7 +43,7 @@ class ProductMapper
     {
         $elementCount = $this->pdo->query('SELECT COUNT(*) FROM products')->fetch(\PDO::FETCH_NUM)[0];
 
-        $this->pagination = new Pagination('Products', $elementCount, $pageNo);
+        $this->pagination = new Pagination('products', $elementCount, $pageNo);
     }
 
     /**
