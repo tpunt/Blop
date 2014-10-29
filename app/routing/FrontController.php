@@ -52,10 +52,15 @@ class FrontController
         $this->action = $action;
         $this->get = $get;
 
-        if(!$router->isValidRoute($route))
-            $this->route = self::DEFAULT_ROUTE;
-        else
-            $this->route = $route;
+        if(empty($route))
+            $route = self::DEFAULT_ROUTE;
+
+        if(!$router->isValidRoute($route)) {
+            header('Location: http://lindseyspt.pro');
+            die;
+        }
+
+        $this->route = $route;
 
         $this->initiateTriad(...$this->normaliseNames(...$router->getTriad($this->route)));
     }
