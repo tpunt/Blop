@@ -12,17 +12,17 @@ namespace app\models\DomainModel;
 class Product
 {
     /**
-     * @var int|0     $productID          The auto-generated product ID.
-     * @var string|   $productName        The product name.
-     * @var string|   $productDescr       A description of the product.
-     * @var int|0     $productStockLevel  Current stock level of the product.
-     * @var float|0.0 $productPrice       The price of the product.
-     * @var int|0     $productViews       The number of views a product has had.
-     * @var string|   $productPrevPhoto   The preview photo of the product show on the products overview page.
+     * @var int|0     $productID           The auto-generated product ID.
+     * @var string|   $productName         The product name.
+     * @var string|   $productDescription  A description of the product.
+     * @var int|0     $productStockLevel   Current stock level of the product.
+     * @var float|0.0 $productPrice        The price of the product.
+     * @var int|0     $productViews        The number of views a product has had.
+     * @var string|   $productPrevPhoto    The preview photo of the product show on the products overview page.
      */
     private $productID = 0,
             $productName = '',
-            $productDescr = '',
+            $productDescription = '',
             $productStockLevel = 0,
             $productPrice = 0.0,
             $productViews = 0,
@@ -92,7 +92,7 @@ class Product
         if($pDescrLength < 20 || $pDescrLength > 65535)
             throw new \InvalidArgumentException('Invalid product description.');
 
-        $this->productDescr = $pDescr;
+        $this->productDescription = $pDescr;
     }
 
     /**

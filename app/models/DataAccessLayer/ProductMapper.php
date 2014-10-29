@@ -67,8 +67,6 @@ class ProductMapper
         $productsQuery = $this->pdo->query("SELECT product_id, product_name, stock_level, price, preview_photo
                                             FROM products WHERE product_id BETWEEN {$from} AND {$to}");
 
-        // validate response of $productsQuery ?
-
         while($p = $productsQuery->fetch(\PDO::FETCH_ASSOC))
             array_push($products, new Product($p['product_name'], $p['stock_level'], $p['price'], $p['preview_photo'], $p['product_id']));
 
@@ -77,6 +75,19 @@ class ProductMapper
 
     public function getProductByID($pID)
     {
-        //
+        $pID = (int) $pID;
+
+        $productQuery = $this->pdo->query("SELECT product_name, product_description, stock_level, price, preview_photo
+                                           FROM products WHERE product_id = {$pID}");
+
+        if(empty($productQuery))
+            throw new \InvalidArgumentException('Invalid product ID.');
+
+        $p = $productQuery->fetch(\PDO::FETCH_ASSOC);
+
+        $product = new Product($p['product_name'], $p['stock_level'], $p['price'], $p['preview_photo'], $pID);
+        $product->setProductDescription($p['product_description']);
+
+        return $product;
     }
 }
