@@ -41,7 +41,7 @@ class ProductMapper
      */
     public function newPagination($pageNo)
     {
-        $elementCount = $this->pdo->query('SELECT COUNT(*) FROM products')->fetch(\PDO::FETCH_NUM)[0];
+        $elementCount = (int) $this->pdo->query('SELECT COUNT(*) FROM Products')->fetch(\PDO::FETCH_NUM)[0];
 
         $this->pagination = new Pagination('products', $elementCount, $pageNo);
     }
@@ -49,7 +49,7 @@ class ProductMapper
     /**
      * Gets a group of products corresponding to the range of product ID's specified.
      *
-     * @return array     An array of Product objects containing thread information.
+     * @return array  An array of Product objects containing thread information.
      */
     public function getProducts()
     {
@@ -73,6 +73,12 @@ class ProductMapper
         return $products;
     }
 
+    /**
+     * Validates and returns the product ID specified (or null if it doesn't exist).
+     *
+     * @param  int $pID  The ID of the product to get.
+     * @return Product   A Product object on success or null on failure.
+     */
     public function getProductByID($pID)
     {
         $pID = (int) $pID;

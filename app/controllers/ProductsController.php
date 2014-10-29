@@ -32,7 +32,7 @@ class ProductsController // product(S)? Difference between overview page of prod
     }
 
     /**
-     * Passes the GET data to the PostMapper domain object to validate it.
+     * Passes the GET data to the ProductMapper domain object to validate it.
      */
     public function page($pageNo)
     {
