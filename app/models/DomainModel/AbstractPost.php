@@ -6,7 +6,7 @@ namespace app\models\DomainModel;
 
 /**
  * This class encapsulates the business logic that is common to threads (blog posts) and posts
- * (blog comments). It is therefore the superclass for ThreadPost and ReplyPost.
+ * (blog comments). It is therefore the superclass for Post and Comment.
  *
  * @package  Blop/app/models/DomainModel
  * @author   Thomas Punt
@@ -15,88 +15,97 @@ namespace app\models\DomainModel;
 abstract class AbstractPost
 {
     /**
-     * @var int|0   $abstractPostID         The abstract post ID.
-     * @var string| $abstractPostBody       The abstract post body.
-     * @var int|0   $abstractPostDate       The abstract post date.
-     * @var int|0   $abstractPostCreatorID  The ID of the abstract post creator.
+     * @var int|0         $postID         The ID of the post.
+     * @var string|       $postBody       The content of the post.
+     * @var DateTime|null $postDate       The date of the post.
+     * @var int|0         $postCreatorID  The ID of the post creator.
      */
-    private $abstractPostID = 0,
-            $abstractPostBody = '',
-            $abstractPostDate = 0,
-            $abstractPostCreatorID = 0;
+    protected $postID = 0,
+              $postBody = '',
+              $postDate = null,
+              $postCreatorID = 0;
 
     /**
-     * Sets the creator's ID and optionally the abstract post body.
+     * Sets the abstract post body.
      *
-     * The reason why the thread body is optionally populated is because in previews of threads,
-     * it's typical to only see each thread's title, post date, and creator ID.
+     * The reason it only sets the body is because it's the only attribute that a Post and Comment
+     * object is gauranteed to have in common. Every other attribute tied to both of these objects
+     * are optional depending upon the situation.
      *
-     * @param  int    $abstractPostCreatorID  The user ID.
-     * @param  string $abstractPostBody       The body of the abstract post.
-     * @throws InvalidArgumentException       Thrown if any fields contain invalid data.
+     * @param  string $postBody          The body of the post.
+     * @throws InvalidArgumentException  Thrown the post body is invalid.
      */
-    public function __construct($abstractPostCreatorID, $abstractPostBody = '')
+    public function __construct($postBody)
     {
-        $this->setAbstractPostCreatorID($abstractPostCreatorID);
-
-        if($abstractPostBody)
-            $this->setAbstractPostBody($abstractPostBody);
+        $this->setPostBody($postBody);
     }
 
     /**
-     * Validates and sets the user ID for the abstract post.
+     * Validates and sets the user ID for the post.
      *
      * @param  int $uid                  The ID of the user.
      * @throws InvalidArgumentException  Thrown if the user ID is invalid.
      */
-    protected function setAbstractPostCreatorID($uid)
+    protected function setPostCreatorID($uid)
     {
         if($uid < 1)
             throw new \InvalidArgumentException('The user ID is invalid.');
 
-        $this->abstractPostCreatorID = $uid;
+        $this->postCreatorID = $uid;
     }
 
     /**
-     * Validates and sets the body for the abstract post.
+     * Validates and sets the body for the post.
      *
-     * @param  string $abstractPostBody  The body of the abstract post.
-     * @throws InvalidArgumentException  Thrown if the abstract post body has an invalid length.
+     * @param  string $postBody          The body of the post.
+     * @throws InvalidArgumentException  Thrown if the post body has an invalid length.
      */
-    protected function setAbstractPostBody($abstractPostBody)
+    protected function setPostBody($postBody)
     {
-        $abstractPostLength = strlen($abstractPostBody);
+        $postLength = strlen($postBody);
 
-        if($abstractPostLength < 10 || $abstractPostLength > 65535)
+        if($postLength < 10 || $postLength > 65535)
             throw new \InvalidArgumentException('The post body length is invalid.');
 
-        $this->abstractPostBody = $abstractPostBody;
+        $this->postBody = $postBody;
 
     }
 
     /**
-     * Validates and sets the post ID for the abstract post.
+     * Validates and sets the post ID for the post.
      *
-     * @param  int $abstractPostID       The ID of the abstract post.
+     * @param  int $postID               The ID of the post.
      * @throws InvalidArgumentException  Thrown if the post ID is invalid.
      */
-    protected function setAbstractPostID($abstractPostID)
+    protected function setPostID($postID)
     {
-        if($abstractPostID < 1) // there should be no need for this. Post ID will only ever come from the DB?
+        if($postID < 1)
             throw new \InvalidArgumentException('The post ID must be a natural number (except 0).');
 
-        $this->abstractPostID = $abstractPostID;
+        $this->postID = $postID;
     }
 
     /**
-     * Sets the date for the abstract post.
+     * Sets the date for the post.
      *
-     * @param int $abstractPostDate  The data of the abstract post was made.
+     * @param DateTime $postDate  The data of the post was made.
      */
-    protected function setAbstractPostDate($abstractPostDate)
+    protected function setPostDate(\DateTime $postDate)
     {
-        $this->abstractPostDate = $abstractPostDate;
+        $this->postDate = $postDate;
     }
 
-    use MagicGetter;
+    /**
+     * Returns the post date formatted as a string.
+     *
+     * This getter method is required to represent the date of a post or comment in an format that
+     * can be output in a template (since the DateTime object does not have a default __toString()
+     * method).
+     *
+     * @return string  The abstract post date as a string that has been formatted.
+     */
+    public function getPostDate()
+    {
+        return $this->postDate->format('d-m-Y');
+    }
 }

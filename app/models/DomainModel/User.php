@@ -14,13 +14,13 @@ use app\models\DomainModel\Address as Address;
 class User
 {
     /**
-     * @var int|0 $userID          The ID of the user.
-     * @var string| $email         The email of the user.
-     * @var string| $password      The (BCrypt) hashed password of the user.
-     * @var string| $forename      The forename of the user.
-     * @var string| $surname       The surname of the user.
-     * @var int|2 $privilegeLevel  The privilege level of the user.
-     * @var array| $addresses      The addresses of the user.
+     * @var int|0   $userID          The ID of the user.
+     * @var string| $email           The email of the user.
+     * @var string| $password        The (BCrypt) hashed password of the user.
+     * @var string| $forename        The forename of the user.
+     * @var string| $surname         The surname of the user.
+     * @var int|2   $privilegeLevel  The privilege level of the user.
+     * @var array|  $addresses       The addresses of the user.
      */
     private $userID = 0,
             $email = '',
