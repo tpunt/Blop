@@ -62,10 +62,10 @@ class ProductMapper
             return $products;
 
         $from = $this->pagination->getFrom();
-        $to = $this->pagination->getTo();
+        $perPageNo = $this->pagination->getPerPageNo();
 
         $productsQuery = $this->pdo->query("SELECT product_id, product_name, stock_level, price, preview_photo
-                                            FROM products WHERE product_id BETWEEN {$from} AND {$to}");
+                                            FROM products LIMIT {$from}, {$perPageNo}");
 
         while($p = $productsQuery->fetch(\PDO::FETCH_ASSOC))
             array_push($products, new Product($p['product_name'], $p['stock_level'], $p['price'], $p['preview_photo'], $p['product_id']));

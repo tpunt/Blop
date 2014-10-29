@@ -22,16 +22,14 @@ class Pagination
      * @var int|0     $elementCount  The number of records in the system that can be fetched.
      * @var bool|true $validity      Whether the pagination object is valid.
      * @var int|0     $from          The element number to start fetching results from.
-     * @var int|0     $to            The element number to finish fetching results to.
      */
     private $usage = '',
             $usages = ['products'], // load in from config
             $pageNo = 1,
-            $perPageNo = 10, // load in from config file
+            $perPageNo = 1, // load in from config file
             $elementCount = 0,
             $validity = true,
-            $from = 0,
-            $to = 0;
+            $from = 0;
 
     /**
      * Validates and sets the route the pagination is being used for, along with
@@ -102,8 +100,7 @@ class Pagination
      */
     private function calculateRange()
     {
-        $this->to = $this->pageNo * $this->perPageNo;
-        $this->from = $this->to - $this->perPageNo + 1;
+        $this->from = $this->pageNo * $this->perPageNo - $this->perPageNo;
     }
 
     use MagicGetter;
