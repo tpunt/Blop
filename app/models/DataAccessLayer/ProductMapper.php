@@ -77,13 +77,11 @@ class ProductMapper
     {
         $pID = (int) $pID;
 
-        $productQuery = $this->pdo->query("SELECT product_name, product_description, stock_level, price, preview_photo
-                                           FROM products WHERE product_id = {$pID}");
+        $p = $this->pdo->query("SELECT product_name, product_description, stock_level, price, preview_photo
+                                           FROM products WHERE product_id = {$pID}")->fetch(\PDO::FETCH_ASSOC);
 
-        if(empty($productQuery))
-            throw new \InvalidArgumentException('Invalid product ID.');
-
-        $p = $productQuery->fetch(\PDO::FETCH_ASSOC);
+        if(!$p)
+            return null;
 
         $product = new Product($p['product_name'], $p['stock_level'], $p['price'], $p['preview_photo'], $pID);
         $product->setProductDescription($p['product_description']);
