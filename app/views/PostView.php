@@ -38,7 +38,7 @@ class PostView
     }
 
     /**
-     * Contains all of the binding logic in order to render the threads.tpl file.
+     * Contains all of the binding logic in order to render the post.tpl file.
      *
      * @param array   $globalBindings  The information to be bound to every template.
      * @return string                  The rendered template.
