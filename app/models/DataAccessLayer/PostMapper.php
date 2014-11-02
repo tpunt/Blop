@@ -84,15 +84,14 @@ class PostMapper
     {
         $postID = (int) $postID;
 
-        $p = $pdo->query("SELECT post_title, thread_content, user_id FROM Posts WHERE post_id = {$postID}")->fetch(\PDO::FETCH_ASSOC);
+        $p = $this->pdo->query("SELECT post_title, post_content, post_date, user_id FROM Posts WHERE post_id = {$postID}")->fetch(\PDO::FETCH_ASSOC);
 
         if(!$p)
             return null;
 
         // grab comments here.
 
-        $post = new Post($threadData['user_id'], $threadData['thread_title'], $threadData['thread_content']); // OUTDATED!
-        $post->setPostID($postID);
+        $post = new Post($p['post_title'], $p['post_content'], $p['user_id'], new \DateTime($p['post_date']), $postID);
 
         // add comments here.
 

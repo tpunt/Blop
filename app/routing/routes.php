@@ -20,6 +20,7 @@ return [
     'products' => [['ProductMapper', 'WebPageContentMapper'], 'ProductsView', 'ProductsController'],
     'product' => [['ProductMapper', 'WebPageContentMapper'], 'ProductView', ''],
     'posts' => [['PostMapper', 'WebPageContentMapper'], 'PostsView', 'PostsController'],
+    'post' => [['PostMapper', 'WebPageContentMapper'], 'PostView', ''],
     'showthreads' => [['ThreadPostMapper'], 'ThreadsView', 'ThreadsController'],
     'showthread' => [['ThreadPostMapper'], 'ThreadView', 'ThreadController'],
     'newthread' => [['ThreadPostMapper'], 'NewThreadPostView', 'NewThreadPostController']
