@@ -12,7 +12,19 @@
         {% include 'global/header.tpl' %}
 
         <section id="mainframe">
-            <p>User dashboard here.</p>
+            <aside id="accnav">
+                <ul>
+                    <li><a href="{{ siteURI }}">Account Overview</a></li>
+                    <li><a href="{{ siteURI }}">Account Information</a></li>
+                    <li><a href="{{ siteURI }}">...</a></li>
+                </ul>
+            </aside>
+
+            <section id="dashboard">
+                <p>User dashboard here.</p>
+            </section>
+
+            <div class="clearFloat"></div>
         </section>
 
         {% include 'global/footer.tpl' %}
