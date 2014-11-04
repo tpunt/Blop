@@ -66,8 +66,8 @@ class FrontController
                 $params[1] = self::DEFAULT_ROUTE;
 
             if(!$router->isValidChildRoute($params[0], $params[1])) {
-                header("Location: http://lindseyspt.pro/{$params[0]}"); // don't hardcode the URI
-                die;
+                $params[2] = $params[1];
+                $params[1] = self::DEFAULT_ROUTE;
             }
 
             $triad = $router->getTriad($params[0], $params[1]);

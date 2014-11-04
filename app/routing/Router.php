@@ -68,6 +68,9 @@ class Router
         if(empty($childRoute))
             return $this->routes[$parentRoute];
 
+        //if(!$this->isValidChildRoute($parentRoute, $childRoute))
+        //    return $this->routes[$parentRoute];
+
         return $this->routes[$parentRoute][$childRoute];
     }
 }
