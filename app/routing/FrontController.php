@@ -62,10 +62,7 @@ class FrontController
         $triad = [];
 
         if($router->isParentRoute($params[0])) {
-            if(empty($params[1]))
-                $params[1] = self::DEFAULT_ROUTE;
-
-            if(!$router->isValidChildRoute($params[0], $params[1])) {
+            if(empty($params[1]) || !$router->isValidChildRoute($params[0], $params[1])) {
                 $params[2] = $params[1];
                 $params[1] = self::DEFAULT_ROUTE;
             }
