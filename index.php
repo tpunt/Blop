@@ -22,20 +22,12 @@ $redis->select($dbconfig['redis']['db']);
 session_set_save_handler(new RedisSessionHandler($redis));
 session_start();
 
-$route = '';
-$action = '';
-$get = '';
-
-if(isset($_GET['triad'])) {
-    $route = $_GET['triad'];
-
-    if(isset($_GET['action'])) {
-        $action = $_GET['action'];
-
-        if(isset($_GET['get']))
-            $get = $_GET['get'];
-    }
-}
+$params = [
+    isset($_GET['param1']) ? $_GET['param1'] : '',
+    isset($_GET['param2']) ? $_GET['param2'] : '',
+    isset($_GET['param3']) ? $_GET['param3'] : '',
+    isset($_GET['param4']) ? $_GET['param4'] : ''
+];
 
 try {
     $twig = new Twig_Environment(new Twig_Loader_Filesystem('app/views/templates'));
@@ -43,10 +35,10 @@ try {
     $router = new Router('app/routing/routes.php');
 
     // pass through GET and POST data? Or just access that data directly in the invoked classes?
-    $fc = new FrontController($dic, $twig, $router, $route, $action, $get);
+    $fc = new FrontController($dic, $twig, $router, $params);
 
     // send out XML headers for HTML5 markup to be parsed as XHTML (to serve XHTML5)
-    header('Content-Type: application/xhtml+xml');
+    //header('Content-Type: application/xhtml+xml');
 
     echo $fc->render($globalBindings);
 }catch(Exception $e) {

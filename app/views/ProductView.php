@@ -49,7 +49,7 @@ class ProductView
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''), // don't use superglobal here
                      'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle(),
-                     'product' => $this->productMapper->getProductByID($_GET['action'])]; // don't use superglobal here
+                     'product' => $this->productMapper->getProductByID($_GET['param2'])]; // don't use superglobal here
 
         return $tpl->render(array_merge($bindings, $globalBindings));
     }

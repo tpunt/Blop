@@ -49,7 +49,7 @@ class PostView
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
                      'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle(),
-                     'post' => $this->postMapper->getPostByID($_GET['action'])]; // don't use superglobal here
+                     'post' => $this->postMapper->getPostByID($_GET['param2'])]; // don't use superglobal here
 
         return $tpl->render(array_merge($bindings, $globalBindings));
     }

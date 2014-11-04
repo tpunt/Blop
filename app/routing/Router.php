@@ -33,15 +33,28 @@ class Router
         $this->routes = require $routesFile;
     }
 
+    public function isParentRoute($routeName)
+    {
+        if(isset($this->routes[$routeName][0]))
+            return false;
+
+        return true;
+    }
+
     /**
      * Checks to ensure the route name is valid.
      *
      * @param  string $routeName  The name of the route.
      * @return bool               Whether the route exists or not.
      */
-    public function isValidRoute($routeName)
+    public function isValidParentRoute($parentRoute)
     {
-        return isset($this->routes[$routeName]);
+        return isset($this->routes[$parentRoute]);
+    }
+
+    public function isValidChildRoute($parentRoute, $childRoute)
+    {
+        return isset($this->routes[$parentRoute][$childRoute]);
     }
 
     /**
@@ -50,8 +63,11 @@ class Router
      * @param  string $routeName  The name of the route.
      * @return array              The class names of the triad of components.
      */
-    public function getTriad($routeName)
+    public function getTriad($parentRoute, $childRoute = '')
     {
-        return $this->routes[$routeName];
+        if(empty($childRoute))
+            return $this->routes[$parentRoute];
+
+        return $this->routes[$parentRoute][$childRoute];
     }
 }

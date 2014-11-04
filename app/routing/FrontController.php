@@ -29,9 +29,10 @@ class FrontController
      */
     private $view = null,
             $dic = null,
-            $action = '',
             $tplEngine = null,
-            $route = '',
+            $parentRoute = '',
+            $childRoute = '',
+            $action = '',
             $get = '';
 
     /**
@@ -45,24 +46,38 @@ class FrontController
      * @param  string           $get        The GET data for the web page.
      * @throws Exception                    Any exception being raised in the application.
      */
-    public function __construct(Dice $dic, \Twig_Environment $tplEngine, Router $router, $route, $action, $get)
+    public function __construct(Dice $dic, \Twig_Environment $tplEngine, Router $router, array $params)
     {
         $this->dic = $dic;
         $this->tplEngine = $tplEngine;
-        $this->action = $action;
-        $this->get = $get;
 
-        if(empty($route))
-            $route = self::DEFAULT_ROUTE;
+        if(empty($params[0]))
+            $params[0] = self::DEFAULT_ROUTE;
 
-        if(!$router->isValidRoute($route)) {
-            header('Location: http://lindseyspt.pro');
+        if(!$router->isValidParentRoute($params[0])) {
+            header('Location: http://lindseyspt.pro'); // don't hardcode the URI
             die;
         }
 
-        $this->route = $route;
+        $triad = [];
 
-        $this->initiateTriad(...$this->normaliseNames(...$router->getTriad($this->route)));
+        if($router->isParentRoute($params[0])) {
+            if(empty($params[1]))
+                $params[1] = self::DEFAULT_ROUTE;
+
+            if(!$router->isValidChildRoute($params[0], $params[1])) {
+                header("Location: http://lindseyspt.pro/{$params[0]}"); // don't hardcode the URI
+                die;
+            }
+
+            $triad = $router->getTriad($params[0], $params[1]);
+            list($this->parentRoute, $this->childRoute, $this->action, $this->get) = $params;
+        }else{
+            $triad = $router->getTriad($params[0]);
+            list($this->parentRoute, $this->action, $this->get, $this->childRoute) = $params;
+        }
+
+        $this->initiateTriad(...$this->normaliseNames(...$triad));
     }
 
     /**
@@ -106,8 +121,10 @@ class FrontController
             foreach($models as $model) {
                 $model = $this->dic->create($model);
 
-                if($model instanceof \app\models\DataAccessLayer\WebPageContentMapper)
-                    $model->setPage($this->route);
+                if($model instanceof \app\models\DataAccessLayer\WebPageContentMapper) {
+                    $pageName = $this->parentRoute.(!empty($this->childRoute) ? "/{$this->childRoute}" : '');
+                    $model->setPage($pageName);
+                }
 
                 array_push($m, $model);
             }
@@ -116,15 +133,15 @@ class FrontController
             if(!empty($controller)) {
                 $controller = new $controller(...$m);
 
-                if(!empty($this->action)) {
+                if(!empty($this->action))
                     if(method_exists($controller, $this->action))
                         $controller->{$this->action}($this->get);
                     else
-                        throw new \InvalidArgumentException('Invalid action');
-                }
+                        throw new \InvalidArgumentException('');
             }
         }catch(\InvalidArgumentException $e) {
-            header("Location: http://lindseyspt.pro/{$this->route}"); // don't hard-code the URI
+            $pageName = $this->parentRoute.(!empty($this->childRoute) ? "/{$this->childRoute}" : '');
+            header("Location: http://lindseyspt.pro/{$pageName}"); // don't hard-code the URI
             die;
         }
 

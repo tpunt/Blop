@@ -16,7 +16,9 @@ return [
     'aboutme' => [['WebPageContentMapper'], 'AboutMeView', ''],
     'login' => [['UserMapper'], 'LoginView', 'LoginController'],
     'register' => [['UserMapper'], 'RegisterView', 'RegisterController'],
-    'account' => [['UserMapper'], 'AccountView', 'AccountController'],
+    'account' => [
+        'index' => [['UserMapper'], 'AccountView', 'AccountController']
+    ],
     'products' => [['ProductMapper', 'WebPageContentMapper'], 'ProductsView', 'ProductsController'],
     'product' => [['ProductMapper', 'WebPageContentMapper'], 'ProductView', ''],
     'posts' => [['PostMapper', 'WebPageContentMapper'], 'PostsView', 'PostsController'],
