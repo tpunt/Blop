@@ -23,7 +23,8 @@ class Router
      * Ensures the routes.php file exists and can be read, and then populates the $routes
      * instance variable.
      *
-     * @param string $routesFile  The file containing information about all the valid routes.
+     * @param  string $routesFile        The file containing information about all the valid routes.
+     * @throws InvalidArgumentException  Thrown if the file either doesn't exist or isn't readable.
      */
     public function __construct($routesFile)
     {
@@ -33,44 +34,54 @@ class Router
         $this->routes = require $routesFile;
     }
 
-    public function isParentRoute($routeName)
+    /**
+     * Checks to see if the super route has a sub route.
+     *
+     * @param  string $routeName  The name of the super route.
+     * @return bool               Whether a sub route exists or not.
+     */
+    public function hasSubRoute($superRoute)
     {
-        if(isset($this->routes[$routeName][0]))
+        if(isset($this->routes[$superRoute][0]))
             return false;
 
         return true;
     }
 
     /**
-     * Checks to ensure the route name is valid.
+     * Checks to ensure the super route name is valid.
      *
-     * @param  string $routeName  The name of the route.
-     * @return bool               Whether the route exists or not.
+     * @param  string $superRoute  The name of the super route.
+     * @return bool                Whether the route exists or not.
      */
-    public function isValidParentRoute($parentRoute)
+    public function isValidSuperRoute($superRoute)
     {
-        return isset($this->routes[$parentRoute]);
+        return isset($this->routes[$superRoute]);
     }
 
-    public function isValidChildRoute($parentRoute, $childRoute)
+    /**
+     * Checks to ensure the sub route name is valid.
+     *
+     * @param  string $superRoute  The name of the sub route.
+     * @return bool                Whether the route exists or not.
+     */
+    public function isValidSubRoute($superRoute, $subRoute)
     {
-        return isset($this->routes[$parentRoute][$childRoute]);
+        return isset($this->routes[$superRoute][$subRoute]);
     }
 
     /**
      * Gets the route's corresponding triad of components.
      *
-     * @param  string $routeName  The name of the route.
-     * @return array              The class names of the triad of components.
+     * @param  string $superRoute  The name of the super route.
+     * @param  string $superRoute  The name of the sub route if one is present.
+     * @return array               The class names of the triad of components.
      */
-    public function getTriad($parentRoute, $childRoute = '')
+    public function getTriad($superRoute, $subRoute = '')
     {
-        if(empty($childRoute))
-            return $this->routes[$parentRoute];
+        if(empty($subRoute))
+            return $this->routes[$superRoute];
 
-        //if(!$this->isValidChildRoute($parentRoute, $childRoute))
-        //    return $this->routes[$parentRoute];
-
-        return $this->routes[$parentRoute][$childRoute];
+        return $this->routes[$superRoute][$subRoute];
     }
 }

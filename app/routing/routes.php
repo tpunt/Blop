@@ -3,8 +3,14 @@
 /**
  * This file contains all information about the routes of the application.
  *
- * Route format:
- * route_hame_here => [['ModelA', 'ModelB'], 'View', 'Controller'];
+ * Super route format WITHOUT sub routes:
+ * 'super_route_name' => [['ModelA', 'ModelB'], 'View', 'Controller'];
+ *
+ * Super route format WITH sub routes:
+ * 'super_route_name' => [
+ *     'sub_route_name1' => [['ModelA', 'ModelB'], 'View', 'Controller'],
+ *     'sub_route_name2' => [['ModelA', 'ModelB'], 'View', 'Controller']
+ * ];
  *
  * @package  Blop/app/routing
  * @author   Thomas Punt

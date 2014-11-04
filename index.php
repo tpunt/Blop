@@ -38,7 +38,7 @@ try {
     $fc = new FrontController($dic, $twig, $router, $params);
 
     // send out XML headers for HTML5 markup to be parsed as XHTML (to serve XHTML5)
-    //header('Content-Type: application/xhtml+xml');
+    header('Content-Type: application/xhtml+xml');
 
     echo $fc->render($globalBindings);
 }catch(Exception $e) {

@@ -20,18 +20,19 @@ class FrontController
     const DEFAULT_ROUTE = 'index';
 
     /**
-     * @var View|null             $view       The view object being used.
-     * @var Dice|null             $dic        The dependency injection container being used.
-     * @var string|               $action     The controller action being invoked.
-     * @var Twig_Environment|null $tplEngine  The templating engine being used.
-     * @var string|               $route      The route being taken within the application.
-     * @var string|               $get        The GET data for the page.
+     * @var View|null             $view         The view object being used.
+     * @var Dice|null             $dic          The dependency injection container being used.
+     * @var Twig_Environment|null $tplEngine    The templating engine being used.
+     * @var string|               $superRoute   The super route being taken within the application.
+     * @var string|               $subRoute     The sub route being taken within the application.
+     * @var string|               $action       The controller action being invoked.
+     * @var string|               $get          The GET data for the page.
      */
     private $view = null,
             $dic = null,
             $tplEngine = null,
-            $parentRoute = '',
-            $childRoute = '',
+            $superRoute = '',
+            $subRoute = '',
             $action = '',
             $get = '';
 
@@ -41,9 +42,7 @@ class FrontController
      * @param  Dice             $dic        The dependency injection container to create object graphs.
      * @param  Twig_Environment $tplEngine  The templating engine to parse the tpl files in views/templates.
      * @param  Router           $router     The router to validate the route and get the corresponding triad.
-     * @param  string           $route      The route being taken within the application.
-     * @param  string           $action     The controller action being invoked.
-     * @param  string           $get        The GET data for the web page.
+     * @param  array            $params     The super and sub routes, the action, and the GET data
      * @throws Exception                    Any exception being raised in the application.
      */
     public function __construct(Dice $dic, \Twig_Environment $tplEngine, Router $router, array $params)
@@ -54,24 +53,24 @@ class FrontController
         if(empty($params[0]))
             $params[0] = self::DEFAULT_ROUTE;
 
-        if(!$router->isValidParentRoute($params[0])) {
+        if(!$router->isValidSuperRoute($params[0])) {
             header('Location: http://lindseyspt.pro'); // don't hardcode the URI
             die;
         }
 
         $triad = [];
 
-        if($router->isParentRoute($params[0])) {
-            if(empty($params[1]) || !$router->isValidChildRoute($params[0], $params[1])) {
+        if($router->hasSubRoute($params[0])) {
+            if(empty($params[1]) || !$router->isValidSubRoute($params[0], $params[1])) {
                 $params[2] = $params[1];
                 $params[1] = self::DEFAULT_ROUTE;
             }
 
             $triad = $router->getTriad($params[0], $params[1]);
-            list($this->parentRoute, $this->childRoute, $this->action, $this->get) = $params;
+            list($this->superRoute, $this->subRoute, $this->action, $this->get) = $params;
         }else{
             $triad = $router->getTriad($params[0]);
-            list($this->parentRoute, $this->action, $this->get, $this->childRoute) = $params;
+            list($this->superRoute, $this->action, $this->get, $this->subRoute) = $params;
         }
 
         $this->initiateTriad(...$this->normaliseNames(...$triad));
@@ -119,7 +118,7 @@ class FrontController
                 $model = $this->dic->create($model);
 
                 if($model instanceof \app\models\DataAccessLayer\WebPageContentMapper) {
-                    $pageName = $this->parentRoute.(!empty($this->childRoute) ? "/{$this->childRoute}" : '');
+                    $pageName = $this->superRoute.(!empty($this->subRoute) ? "/{$this->subRoute}" : '');
                     $model->setPage($pageName);
                 }
 
@@ -137,7 +136,7 @@ class FrontController
                         throw new \InvalidArgumentException('');
             }
         }catch(\InvalidArgumentException $e) {
-            $pageName = $this->parentRoute.(!empty($this->childRoute) ? "/{$this->childRoute}" : '');
+            $pageName = $this->superRoute.(!empty($this->subRoute) ? "/{$this->subRoute}" : '');
             header("Location: http://lindseyspt.pro/{$pageName}"); // don't hard-code the URI
             die;
         }
