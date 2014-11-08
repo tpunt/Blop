@@ -18,7 +18,7 @@
             <section class="product">
                 <p>
                     pID: {{ post.getPostID }}<br />
-                    pTitle: <a href="{{ siteURI }}/post/{{ post.getPostID }}">{{post.getPostTitle }}</a><br />
+                    pTitle: {{post.getPostTitle }}<br />
                     pContent: {{ post.getPostBody }}<br />
                     pDate: {{ post.getPostDate }}<br />
                     pCreatorID: {{ post.getPostCreatorID }}

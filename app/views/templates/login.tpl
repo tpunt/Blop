@@ -14,7 +14,7 @@
         <section id="mainframe">
             <p>Enter your login credentials here:</p>
             <br />
-            <form action="{{ siteURI }}/login/validateLogin" method="POST">
+            <form action="{{ siteURI }}/{{ superRoute }}/validateLogin" method="POST">
                 <label for="email">Email:</label> <input type="text" id="email" name="email" />
                 <br />
                 <label for="pws">Password:</label> <input type="password" id="pws" name="pws" />

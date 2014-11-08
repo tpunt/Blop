@@ -152,6 +152,9 @@ class FrontController
      */
     public function render(array $globalBindings = [])
     {
-        return $this->view->render($globalBindings);
+        $routeBindings = ['superRoute' => $this->superRoute,
+                          'subRoute' => $this->subRoute];
+
+        return $this->view->render(array_merge($globalBindings, $routeBindings));
     }
 }

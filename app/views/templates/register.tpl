@@ -14,7 +14,7 @@
         <section id="mainframe">
             <p>Enter your login credentials here:</p>
             <br />
-            <form action="{{ siteURI }}/register/validateRegistration" method="POST">
+            <form action="{{ siteURI }}/{{ superRoute }}/validateRegistration" method="POST">
                 <label for="fname">Forename:</label> <input type="text" id="fname" name="forename" />
                 <br />
                 <label for="sname">Surname:</label> <input type="text" id="sname" name="surname" />

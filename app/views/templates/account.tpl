@@ -6,7 +6,7 @@
         <title><!-- {{ pageTitle }} --></title>
 
         <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/global.css" />
-        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/account.css" />
+        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/{{ superRoute }}.css" />
     </head>
     <body>
         {% include 'global/header.tpl' %}
@@ -14,14 +14,13 @@
         <section id="mainframe">
             <aside id="accnav">
                 <ul>
-                    <li><a href="{{ siteURI }}">Account Overview</a></li>
-                    <li><a href="{{ siteURI }}">Account Information</a></li>
-                    <li><a href="{{ siteURI }}">...</a></li>
+                    <li><a href="{{ siteURI }}/{{ superRoute }}">Account Overview</a></li>
+                    <li><a href="{{ siteURI }}/{{ superRoute }}/updateInfo">Update Information</a></li>
                 </ul>
             </aside>
 
             <section id="dashboard">
-                <p>User dashboard here.</p>
+                {% include superRoute ~ '/' ~ subRoute ~ '.tpl' %}
             </section>
 
             <div class="clearFloat"></div>
