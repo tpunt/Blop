@@ -3,6 +3,7 @@ Blop
 
 A platform for blogging and selling.
 
+This project is being developed for the website: http://lindseyspt.co.uk/
 
 Technologies Used:
 * Apache
