@@ -2,8 +2,6 @@
 
 namespace app\models\DomainModel;
 
-use app\models\DomainModel\Address as Address;
-
 /**
  * This class encapsulates the business logic for a user.
  *
