@@ -6,7 +6,7 @@
         <title>{{ pageTitle }}{{post.getPostTitle }}</title>
 
         <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/global.css" />
-        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/products.css" />
+        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/posts.css" />
     </head>
     <body>
         {% include 'global/header.tpl' %}
@@ -19,7 +19,7 @@
             <p>No products to show... (add to db?)</p>
             {% else %}
                 {% for post in posts %}
-            <section class="product">
+            <section class="postPreview">
                 <p>
                     pID: {{ post.getPostID }}<br />
                     pTitle: <a href="{{ siteURI }}/post/{{ post.getPostID }}">{{post.getPostTitle }}</a><br />

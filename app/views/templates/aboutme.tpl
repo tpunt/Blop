@@ -12,7 +12,26 @@
         {% include 'global/header.tpl' %}
 
         <section id="mainframe">
+            <h1>About Me</h1>
+            <section class="leftBox">
+                {{ pageContent.current|raw }}
+            </section>
 
+            {% if pageContent.next is null and pageContent.valid %}
+            <section class="rightBox marginTop">
+                {{ pageContent.current|raw }}
+            </section>
+            {% endif %}
+
+            <div class="clearFloat"></div>
+
+            {% if pageContent.next is null and pageContent.valid %}
+            <section class="centerBox marginTop">
+                {{ pageContent.current|raw }}
+            </section>
+            {% endif %}
+
+            <div class="clearFloat"></div>
         </section>
 
         {% include 'global/footer.tpl' %}

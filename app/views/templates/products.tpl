@@ -20,12 +20,16 @@
             {% else %}
                 {% for product in products %}
             <section class="product">
+                {% if product.getProductPrevPhoto %}
+                <img src="{{ product.getProductPrevPhoto }}" title="..." />
+                {% else %}
+                <img src="{{ siteURI }}/public/images/noImageAvailable_thumbnail.gif" title="Image unavailable" />
+                {% endif %}
                 <p>
                     pID: {{ product.getProductID }}<br />
                     pName: <a href="{{ siteURI }}/product/{{ product.getProductID }}">{{product.getProductName }}</a><br />
                     pStockLevel: {{ product.getProductStockLevel }}<br />
                     pPrice: {{ product.getProductPrice }}<br />
-                    pPrevPhoto: {{ product.getProductPrevPhoto }}
                 </p>
             </section>
                 {% endfor %}
