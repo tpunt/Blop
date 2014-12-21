@@ -43,7 +43,8 @@ class AboutMeView
         $tpl = $this->tplEngine->loadTemplate('aboutme.tpl');
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
-                     'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle()];
+                     'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle(),
+                     'pageContent' => $this->pageContentMapper->getWebPage()->getWebPageContent()];
 
         return $tpl->render(array_merge($bindings, $globalBindings));
     }
