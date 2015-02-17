@@ -16,7 +16,7 @@ class AccountController
     /**
      * @var UserMapper|null     Holds the UserMapper object from the data access layer.
      */
-    private $userMapper = null;
+    protected $userMapper = null;
 
     /**
      * Checks to see whether the user is logged in and assigns a UserMapper object to an instance variable.

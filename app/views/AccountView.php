@@ -41,8 +41,14 @@ class AccountView
     public function render(array $globalBindings = [])
     {
         $tpl = $this->tplEngine->loadTemplate('account.tpl');
+        $user = $this->userMapper->getUser($_SESSION['user']['user_id'], ['forename', 'surname', 'email']);
 
-        $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : '')];
+        $bindings = [
+            'loggedIn' => $_SESSION['user']['user_id'],
+            'pLevel' => $_SESSION['user']['pLevel'],
+            'user' => $user,
+            "{$this->userMapper->getErrorTag()}Error" => $this->userMapper->getError()
+        ];
 
         return $tpl->render(array_merge($bindings, $globalBindings));
     }

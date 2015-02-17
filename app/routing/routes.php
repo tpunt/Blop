@@ -23,7 +23,8 @@ return [
     'login' => [['UserMapper'], 'LoginView', 'LoginController'],
     'register' => [['UserMapper'], 'RegisterView', 'RegisterController'],
     'account' => [
-        'index' => [['UserMapper'], 'AccountView', 'AccountController']
+        'index' => [['UserMapper'], 'AccountView', 'AccountController'],
+        'updateInfo' => [['UserMapper'], 'AccountView', 'AccountInfoController']
     ],
     'products' => [['ProductMapper', 'WebPageContentMapper'], 'ProductsView', 'ProductsController'],
     'product' => [['ProductMapper', 'WebPageContentMapper'], 'ProductView', ''],

@@ -31,26 +31,28 @@ class User
     /**
      * Validates and sets the forename, surname, and email of the user to instance variables.
      *
-     * @param  string $forename          The forename of the user.
-     * @param  string $surname           The surname of the user.
-     * @param  string $email             The email of the user.
+     * @param  mixed $userID             The forename of the user.
      * @throws InvalidArgumentException  Thrown if either the forename, surname, or email is invalid.
      */
-    public function __construct($forename, $surname, $email)
+    public function __construct($userID = 0)
     {
-        $this->setForename($forename)->setSurname($surname)->setEmail($email);
+        if ($userID !== 0) {
+            $this->setUserID($userID);
+        }
     }
 
     /**
      * Validates and sets the user ID to an instance variable.
      *
+     * @param  mixed $userID             The ID of the user
      * @throws InvalidArgumentException  Thrown if the user ID is invalid.
      * @return User                      The current instance.
      */
     public function setUserID($userID)
     {
-        if($userID < 1)
+        if ((!is_int($userID) && !ctype_digit($userID)) || $userID < 1) {
             throw new \InvalidArgumentException('The user ID is invalid.');
+        }
 
         $this->userID = $userID;
         return $this;
