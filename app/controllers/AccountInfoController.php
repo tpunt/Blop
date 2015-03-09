@@ -14,6 +14,11 @@ use app\models\DataAccessLayer\UserMapper;
 class AccountInfoController extends AccountController
 {
     /**
+     * @var UserMapper|null  Holds the UserMapper object from the data access layer.
+     */
+    private $userMapper = null;
+
+    /**
      * Invokes and passes the UserMapper object to its parent's controller, which in turn checks to
      * see whether the user is logged in and assigns the UserMapper object to its instance variable.
      *
@@ -24,7 +29,9 @@ class AccountInfoController extends AccountController
      */
     public function __construct(UserMapper $userMapper)
     {
-        parent::__construct($userMapper);
+        parent::__construct();
+
+        $this->userMapper = $userMapper;
     }
 
     /**
