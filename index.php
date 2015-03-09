@@ -4,6 +4,8 @@ use app\routing\FrontController;
 use app\routing\Router;
 use app\models\DataAccessLayer\RedisSessionHandler;
 
+date_default_timezone_set('Europe/London');
+
 // autoloaders
 require __DIR__.'/autoloader.php'; // try to get rid of this and just use Composer's autoloader
 $loader = require __DIR__.'/vendor/autoload.php';
