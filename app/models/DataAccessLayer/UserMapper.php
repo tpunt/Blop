@@ -2,7 +2,7 @@
 
 namespace app\models\DataAccessLayer;
 
-use app\models\DomainModel\User as User;
+use app\models\DomainModel\User;
 
 /**
  * This class handles users and their information.

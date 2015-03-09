@@ -2,7 +2,7 @@
 
 namespace app\routing;
 
-use Dice\Dice as Dice;
+use Dice\Dice;
 
 /**
  * This is the entry point of the whole application. All requests are routed by the front controller

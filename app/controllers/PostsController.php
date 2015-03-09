@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\DataAccessLayer\PostMapper as PostMapper;
+use app\models\DataAccessLayer\PostMapper;
 
 /**
  * Handles the viewing of posts.

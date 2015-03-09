@@ -2,8 +2,8 @@
 
 namespace app\models\DataAccessLayer;
 
-use app\models\DomainModel\Product as Product;
-use app\models\DomainModel\Pagination as Pagination;
+use app\models\DomainModel\Product;
+use app\models\DomainModel\Pagination;
 
 /**
  * This class handles products and their information.

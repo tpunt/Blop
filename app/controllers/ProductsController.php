@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\DataAccessLayer\ProductMapper as ProductMapper;
+use app\models\DataAccessLayer\ProductMapper;
 
 /**
  * Handles the viewing of products.

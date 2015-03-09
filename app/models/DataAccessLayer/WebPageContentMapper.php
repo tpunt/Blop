@@ -2,7 +2,7 @@
 
 namespace app\models\DataAccessLayer;
 
-use app\models\DomainModel\WebPageContent as WebPageContent;
+use app\models\DomainModel\WebPageContent;
 
 /**
  * This class handles the contents of every web page.

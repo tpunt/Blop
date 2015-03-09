@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\DataAccessLayer\UserMapper as UserMapper;
+use app\models\DataAccessLayer\UserMapper;
 
 /**
  * Handles login actions.

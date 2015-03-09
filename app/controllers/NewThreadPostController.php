@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\DataAccessLayer\ThreadPostMapper as ThreadPostMapper;
+use app\models\DataAccessLayer\ThreadPostMapper;
 
 /**
  * Handles thread creation (i.e. new blog post) actions.

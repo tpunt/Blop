@@ -2,7 +2,7 @@
 
 namespace app\views;
 
-use app\models\DataAccessLayer\WebPageContentMapper as WebPageContentMapper;
+use app\models\DataAccessLayer\WebPageContentMapper;
 
 /**
  * This is the view containing the binding logic for the 'about me' page (using the templates/aboutme.tpl).

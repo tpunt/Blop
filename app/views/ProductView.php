@@ -2,8 +2,8 @@
 
 namespace app\views;
 
-use app\models\DataAccessLayer\WebPageContentMapper as WebPageContentMapper;
-use app\models\DataAccessLayer\ProductMapper as ProductMapper;
+use app\models\DataAccessLayer\WebPageContentMapper;
+use app\models\DataAccessLayer\ProductMapper;
 
 /**
  * This is the view containing the binding logic for the 'product' page (using the templates/product.tpl).

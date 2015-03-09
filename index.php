@@ -1,8 +1,8 @@
 <?php
 
-use app\routing\FrontController as FrontController;
-use app\routing\Router as Router;
-use app\models\DataAccessLayer\RedisSessionHandler as RedisSessionHandler;
+use app\routing\FrontController;
+use app\routing\Router;
+use app\models\DataAccessLayer\RedisSessionHandler;
 
 // autoloaders
 require __DIR__.'/autoloader.php'; // try to get rid of this and just use Composer's autoloader

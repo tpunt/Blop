@@ -2,8 +2,8 @@
 
 namespace app\views;
 
-use app\models\DataAccessLayer\WebPageContentMapper as WebPageContentMapper;
-use app\models\DataAccessLayer\PostMapper as PostMapper;
+use app\models\DataAccessLayer\WebPageContentMapper;
+use app\models\DataAccessLayer\PostMapper;
 
 /**
  * This is the view containing the binding logic for an indivual post page (using the templates/post.tpl).

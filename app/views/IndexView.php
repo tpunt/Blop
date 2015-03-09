@@ -2,7 +2,7 @@
 
 namespace app\views;
 
-use app\models\DataAccessLayer\WebPageContentMapper as WebPageContentMapper;
+use app\models\DataAccessLayer\WebPageContentMapper;
 
 /**
  * This is the view containing the binding logic for the 'Index' page (using the templates/index.tpl).

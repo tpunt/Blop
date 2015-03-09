@@ -2,7 +2,7 @@
 
 namespace app\views;
 
-use app\models\DataAccessLayer\UserMapper as UserMapper;
+use app\models\DataAccessLayer\UserMapper;
 
 /**
  * This is the view containing the binding logic for the 'Account' page (using the templates/account.tpl).

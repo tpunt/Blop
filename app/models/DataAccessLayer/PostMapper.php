@@ -2,8 +2,8 @@
 
 namespace app\models\DataAccessLayer;
 
-use app\models\DomainModel\Post as Post;
-use app\models\DomainModel\Pagination as Pagination;
+use app\models\DomainModel\Post;
+use app\models\DomainModel\Pagination;
 
 /**
  * This class handles the new and already created blog posts.

@@ -1,8 +1,9 @@
 <?php
 
 namespace app\views;
-use app\controllers\NewThreadPostController as NewThreadPostController;
-use app\models\DataAccessLayer\ThreadPostMapper as ThreadPostMapper;
+
+use app\controllers\NewThreadPostController;
+use app\models\DataAccessLayer\ThreadPostMapper;
 
 class NewThreadPostView
 {
