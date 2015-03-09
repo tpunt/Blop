@@ -26,7 +26,7 @@ class LoginController
     public function __construct(UserMapper $userMapper)
     {
         if(isset($_SESSION['user'])) { // Should I check to see if a user is logged in here?
-            header('Location: http://lindseyspt.pro/account'); // don't hard-code the URI
+            header('Location: /account');
             die;
         }
 

@@ -29,7 +29,7 @@ class AccountController
     public function __construct(UserMapper $userMapper)
     {
         if(!isset($_SESSION['user'])) { // Should I check to see if a user is logged in here?
-            header('Location: http://lindseyspt.pro/login'); // don't hard-code the URI
+            header('Location: /login');
             die;
         }
 
@@ -44,7 +44,7 @@ class AccountController
         unset($_SESSION);
         session_destroy();
 
-        header('Location: http://lindseyspt.pro'); // don't hard-code the URI
+        header('Location: /');
         die;
     }
 }

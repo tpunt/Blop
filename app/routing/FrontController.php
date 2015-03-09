@@ -54,7 +54,7 @@ class FrontController
             $params[0] = self::DEFAULT_ROUTE;
 
         if(!$router->isValidSuperRoute($params[0])) {
-            header('Location: http://lindseyspt.pro'); // don't hardcode the URI
+            header('Location: /');
             die;
         }
 
@@ -137,7 +137,7 @@ class FrontController
             }
         }catch(\InvalidArgumentException $e) {
             $pageName = $this->superRoute.(!empty($this->subRoute) ? "/{$this->subRoute}" : '');
-            header("Location: http://lindseyspt.pro/{$pageName}"); // don't hard-code the URI
+            header("Location: /{$pageName}");
             die;
         }
 

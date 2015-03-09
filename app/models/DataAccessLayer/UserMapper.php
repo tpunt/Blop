@@ -77,7 +77,7 @@ class UserMapper
                 'user_id' => (int) $user['user_id'],
                 'pLevel' => $user['privilege_level']
             ];
-            header('Location: http://lindseyspt.pro'); // remember to make the domain name a variable
+            header('Location: /');
             die;
         }
 
@@ -140,7 +140,7 @@ class UserMapper
         }
 
         $_SESSION['user'] = ['user_id' => $userID];
-        header('Location: http://lindseyspt.pro'); //remember to make the domain name a variable
+        header('Location: /');
         die;
     }
 
@@ -208,7 +208,7 @@ class UserMapper
 
         $this->updateUserGeneralInfo($user);
 
-        header('Location: http://lindseyspt.pro/account/updateInfo');
+        header('Location: /account/updateInfo');
         die;
     }
 
@@ -267,7 +267,7 @@ class UserMapper
 
         $this->updateUserSensitiveInfo($user);
 
-        header('Location: http://lindseyspt.pro/account/updateInfo');
+        header('Location: /account/updateInfo');
         die;
     }
 
@@ -390,7 +390,7 @@ class UserMapper
         $userQuery = $this->pdo->prepare($sql);
         $userQuery->execute([$userID]);
 
-        if (empty($userInfo = $userQuery->fetch(\PDO::FETCH_ASSOC))) { // error occurred
+        if (empty($userInfo = $userQuery->fetch(\PDO::FETCH_ASSOC))) {
             $this->error = 'A user does not exist with the specified ID.';
             return;
         }
