@@ -26,6 +26,10 @@ return [
         'index' => [['UserMapper'], 'AccountView', 'AccountController'],
         'updateInfo' => [['UserMapper'], 'AccountView', 'AccountInfoController']
     ],
+    'admin' => [
+        'index' => [['UserMapper'], 'AdminView', 'AdminController'],
+        'updateSiteContent' => [['WebPageContentMapper'], 'AdminView', 'AdminSiteInfoController']
+    ],
     'products' => [['ProductMapper', 'WebPageContentMapper'], 'ProductsView', 'ProductsController'],
     'product' => [['ProductMapper', 'WebPageContentMapper'], 'ProductView', ''],
     'posts' => [['PostMapper', 'WebPageContentMapper'], 'PostsView', 'PostsController'],
