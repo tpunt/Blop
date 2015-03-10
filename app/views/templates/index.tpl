@@ -15,15 +15,13 @@
     </head>
     <body>
         <aside id="socialSideBar">
-            <section class="socialBox">F</section>
-            <section class="socialBox">T</section>
-            <section class="socialBox">G</section>
+
         </aside>
 
         {% include 'global/header.tpl' %}
 
+            <div class="wrapper-img"><div id="imageSlider"></div></div>
         <section id="mainframe">
-            <div id="imageSlider"></div>
 
             <section class="leftBox">
                 {{ pageContent.current|raw }}
