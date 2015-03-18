@@ -18,8 +18,8 @@
  */
 
 return [
-    'index' => [['WebPageContentMapper'], 'IndexView', ''],
-    'aboutme' => [['WebPageContentMapper'], 'AboutMeView', ''],
+    'index' => [['WebPageMapper'], 'IndexView', ''],
+    'aboutme' => [['WebPageMapper'], 'AboutMeView', ''],
     'login' => [['UserMapper'], 'LoginView', 'LoginController'],
     'register' => [['UserMapper'], 'RegisterView', 'RegisterController'],
     'account' => [
@@ -27,13 +27,14 @@ return [
         'updateInfo' => [['UserMapper'], 'AccountView', 'AccountInfoController']
     ],
     'admin' => [
-        'index' => [['UserMapper'], 'AdminView', 'AdminController'],
-        'updateSiteContent' => [['WebPageContentMapper'], 'AdminView', 'AdminSiteInfoController']
+        'index' => [['UserMapper'], 'AdminIndexView', 'AdminController'],
+        'pages' => [['WebPageMapper'], 'AdminPagesView', ''],
+        'page' => [['WebPageMapper'], 'AdminPageView', 'AdminPageController']
     ],
-    'products' => [['ProductMapper', 'WebPageContentMapper'], 'ProductsView', 'ProductsController'],
-    'product' => [['ProductMapper', 'WebPageContentMapper'], 'ProductView', ''],
-    'posts' => [['PostMapper', 'WebPageContentMapper'], 'PostsView', 'PostsController'],
-    'post' => [['PostMapper', 'WebPageContentMapper'], 'PostView', ''],
+    'products' => [['ProductMapper', 'WebPageMapper'], 'ProductsView', 'ProductsController'],
+    'product' => [['ProductMapper', 'WebPageMapper'], 'ProductView', ''],
+    'posts' => [['PostMapper', 'WebPageMapper'], 'PostsView', 'PostsController'],
+    'post' => [['PostMapper', 'WebPageMapper'], 'PostView', ''],
     'showthreads' => [['ThreadPostMapper'], 'ThreadsView', 'ThreadsController'],
     'showthread' => [['ThreadPostMapper'], 'ThreadView', 'ThreadController'],
     'newthread' => [['ThreadPostMapper'], 'NewThreadPostView', 'NewThreadPostController']

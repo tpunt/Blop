@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\models\DataAccessLayer\WebPageContentMapper;
+use app\models\DataAccessLayer\WebPageMapper;
 
 /**
  * Handles actions performed from an admin's account regarding the content of the website.
@@ -11,12 +11,12 @@ use app\models\DataAccessLayer\WebPageContentMapper;
  * @author   Thomas Punt
  * @license  MIT
  */
-class AdminSiteInfoController extends AdminController
+class AdminPageController extends AdminController
 {
     /**
      * @var WebPageContentMapper|null  Used to manipulate the content of the website.
      */
-    private $webPageContentMapper = null;
+    private $webPageMapper = null;
 
     /**
      * Invokes the parent contstructor to perform a check to see whether the user is logged in.
@@ -24,18 +24,18 @@ class AdminSiteInfoController extends AdminController
      *
      * @param WebPageContentMapper $webPageContentMapper  Used to alter the content of the website.
      */
-    public function __construct(WebPageContentMapper $webPageContentMapper)
+    public function __construct(WebPageMapper $webPageMapper)
     {
         parent::__construct();
 
-        $this->webPageContentMapper = $webPageContentMapper;
+        $this->webPageMapper = $webPageMapper;
     }
 
     /**
      * Used to update the content for the index page.
      */
-    public function updateIndexPageContent()
+    public function edit()
     {
-        $this->webPageContentMapper->modifyWebPageContent('index', $_POST)
+        $this->webPageMapper->modifyWebPage(isset($_GET['page']) ? $_GET['page'] : '', $_POST);
     }
 }

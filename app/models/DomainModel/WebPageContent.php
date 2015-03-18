@@ -3,7 +3,7 @@
 namespace app\models\DomainModel;
 
 /**
- * This class encapsulates the business logic for populating the content of all web pages.
+ * This class encapsulates the domain logic for a piece of content on a single web page.
  *
  * @package  Blop/app/models/DomainModel
  * @author   Thomas Punt
@@ -12,75 +12,68 @@ namespace app\models\DomainModel;
 class WebPageContent
 {
     /**
-     * @var string| $webPageTitle    The title of the web page.
-     * @var array|  $webPageContent  The content of all dynamic elements of a web page.
+     * @var int|0  $contentID  The ID of the piece of content
+     * @var array| $content    A piece of content on a web page
      */
-    private $webPageTitle = '',
-            $webPageContent = [];
+    private $contentID = 0,
+            $content = '';
 
     /**
      * Sets the web page title via a private validation function.
      *
-     * @param  string $webPageTitle      The title of the web page.
-     * @throws InvalidArgumentException  Thrown if the page title being set is too short.
+     * @param  string $webPageTitle      The title of the web page
+     * @throws InvalidArgumentException  Thrown if either the content ID is not an integer value
+     *                                   or if the content length is too small
      */
-    public function __construct($webPageTitle)
+    public function __construct($contentID, $content)
     {
-        $this->setWebPageTitle($webPageTitle);
+        $this->setContentID($contentID);
+        $this->setContent($content);
     }
 
     /**
-     * Validates and sets the web page title to an instance variable.
+     * Sets the ID of the content.
      *
-     * @param  string $webPageTitle      The title of the web page.
-     * @throws InvalidArgumentException  Thrown if the page title is too short.
+     * @param int $contentID  The associated ID to the content
      */
-    private function setWebPageTitle($webPageTitle)
+    private function setContentID($contentID)
     {
-        if(strlen($webPageTitle) < 3)
-            throw new \InvalidArgumentException('The page title is too short.');
+        if ((!is_int($contentID) && !ctype_digit($contentID)) || $contentID < 1)
+            throw new InvalidArgumentException('Invalid content ID');
 
-        $this->webPageTitle = $webPageTitle;
+        $this->contentID = $contentID;
     }
 
     /**
-     * Validates and adds a page content element to the webPageContent instance variable.
+     * Validates and sets the content piece.
      *
-     * @param  string $content           The content of an element of the web page.
-     * @throws InvalidArgumentException  Thrown if the page content is too short.
+     * @param string $content  The piece of content
      */
-    public function addWebPageContent($content)
+    private function setContent($content)
     {
-        if(strlen($content) < 50)
+        if (strlen($content) < 50)
             throw new \InvalidArgumentException('The page content isn\'t long enough');
-            
-        array_push($this->webPageContent, $content);
+
+        $this->content = $content;
     }
 
     /**
-     * Returns the web page title.
+     * Gets the ID of the content.
      *
-     * The MagicGetter trait is not used here because getting the web page content requires
-     * the use of a generator (which the MagicGetter does not offer).
-     *
-     * @return string  The web page title.
+     * @return int  The content ID
      */
-    public function getWebPageTitle()
+    public function getContentID()
     {
-        return $this->webPageTitle;
+        return $this->contentID;
     }
 
     /**
-     * Returns the web page content.
+     * Gets the piece of content.
      *
-     * A generator is used here so that we can automatically iterate over the array on sequential
-     * invocations of this function.
-     *
-     * @return string  Parts of the web page content.
+     * @return string  The content
      */
-    public function getWebPageContent()
+    public function getContent()
     {
-        foreach($this->webPageContent as $content)
-            yield $content;
+        return $this->content;
     }
 }

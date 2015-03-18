@@ -2,7 +2,7 @@
 
 namespace app\views;
 
-use app\models\DataAccessLayer\WebPageContentMapper;
+use app\models\DataAccessLayer\WebPageMapper;
 
 /**
  * This is the view containing the binding logic for the 'about me' page (using the templates/aboutme.tpl).
@@ -14,22 +14,26 @@ use app\models\DataAccessLayer\WebPageContentMapper;
 class AboutMeView
 {
     /**
-     * @var Twig_Environment|null     $tplEngine          The instance of the template engine.
-     * @var WebPageContentMapper|null $pageContentMapper  The instance of the WebPageContent data mapper.
+     * @var Twig_Environment|null $tplEngine   The instance of the template engine.
+     * @var string|               $route       The route taken by the application
+     * @var WebPageMapper|null    $pageMapper  The instance of the WebPage data mapper.
      */
     private $tplEngine = null,
-            $pageContentMapper = null;
+            $route = '',
+            $pageMapper = null;
 
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
-     * @param Twig_Environment     $tplEngine          The instance of the template engine.
-     * @param WebPageContentMapper $pageContentMapper  The instance of the WebPageContent data mapper.
+     * @param Twig_Environment $tplEngine  The instance of the template engine
+     * @param string|          $route      The route taken by the application
+     * @param WebPageMapper $pageMapper    The instance of the WebPage data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, WebPageContentMapper $pageContentMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, WebPageMapper $pageMapper)
     {
         $this->tplEngine = $tplEngine;
-        $this->pageContentMapper = $pageContentMapper;
+        $this->route = $route;
+        $this->pageMapper = $pageMapper;
     }
 
     /**
@@ -40,11 +44,14 @@ class AboutMeView
      */
     public function render(array $globalBindings = [])
     {
-        $tpl = $this->tplEngine->loadTemplate('aboutme.tpl');
+        $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
+        $webPage = $this->pageMapper->getPage($this->route);
+
+        $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
-                     'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle(),
-                     'pageContent' => $this->pageContentMapper->getWebPage()->getWebPageContent()];
+                     'pageTitle' => $webPage->getPageTitle(),
+                     'pageContent' => $webPage->getPageContent()];
 
         return $tpl->render(array_merge($bindings, $globalBindings));
     }

@@ -111,19 +111,12 @@ class FrontController
      */
     private function initiateTriad(array $models, $view, $controller)
     {
+        $pageName = $this->superRoute.(!empty($this->subRoute) ? "/{$this->subRoute}" : '');
         $m = [];
 
         if(!empty($models))
-            foreach($models as $model) {
-                $model = $this->dic->create($model);
-
-                if($model instanceof \app\models\DataAccessLayer\WebPageContentMapper) {
-                    $pageName = $this->superRoute.(!empty($this->subRoute) ? "/{$this->subRoute}" : '');
-                    $model->setPage($pageName);
-                }
-
-                array_push($m, $model);
-            }
+            foreach($models as $model)
+                array_push($m, $this->dic->create($model));
 
         try {
             if(!empty($controller)) {
@@ -136,12 +129,11 @@ class FrontController
                         throw new \InvalidArgumentException('');
             }
         }catch(\InvalidArgumentException $e) {
-            $pageName = $this->superRoute.(!empty($this->subRoute) ? "/{$this->subRoute}" : '');
             header("Location: /{$pageName}");
             die;
         }
 
-        $this->view = new $view($this->tplEngine, ...$m);
+        $this->view = new $view($this->tplEngine, $pageName, ...$m);
     }
 
     /**

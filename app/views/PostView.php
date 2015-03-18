@@ -2,7 +2,7 @@
 
 namespace app\views;
 
-use app\models\DataAccessLayer\WebPageContentMapper;
+use app\models\DataAccessLayer\WebPageMapper;
 use app\models\DataAccessLayer\PostMapper;
 
 /**
@@ -15,40 +15,47 @@ use app\models\DataAccessLayer\PostMapper;
 class PostView
 {
     /**
-     * @var Twig_Environment|null     $tplEngine          The instance of the template engine.
-     * @var PostMapper|null           $postMapper         The instance of the Post data mapper.
-     * @var WebPageContentMapper|null $pageContentMapper  The instance of the WebPageContent data mapper.
+     * @var Twig_Environment|null $tplEngine   The instance of the template engine
+     * @var string|               $route       The route taken by the application
+     * @var PostMapper|null       $postMapper  The instance of the Post data mapper
+     * @var WebPageMapper|null    $pageMapper  The instance of the WebPage data mapper
      */
     private $tplEngine = null,
+            $route = '',
             $postMapper = null,
-            $pageContentMapper = null;
+            $pageMapper = null;
 
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
-     * @param Twig_Environment     $tplEngine          The instance of the template engine.
-     * @param PostMapper           $postMapper         the instance of the Post data mapper.
-     * @param WebPageContentMapper $pageContentMapper  The instance of the WebPageContent data mapper.
+     * @param Twig_Environment $tplEngine   The instance of the template engine
+     * @param string|          $route       The route taken by the application
+     * @param PostMapper       $postMapper  The instance of the Post data mapper
+     * @param WebPageMapper    $pageMapper  The instance of the WebPage data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, PostMapper $postMapper, WebPageContentMapper $pageContentMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, PostMapper $postMapper, WebPageMapper $pageMapper)
     {
         $this->tplEngine = $tplEngine;
+        $this->route = $route;
         $this->postMapper = $postMapper;
-        $this->pageContentMapper = $pageContentMapper;
+        $this->pageMapper = $pageMapper;
     }
 
     /**
      * Contains all of the binding logic in order to render the post.tpl file.
      *
-     * @param array   $globalBindings  The information to be bound to every template.
-     * @return string                  The rendered template.
+     * @param array   $globalBindings  The information to be bound to every template
+     * @return string                  The rendered template
      */
     public function render(array $globalBindings = [])
     {
-        $tpl = $this->tplEngine->loadTemplate('post.tpl');
+        $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
+        $webPage = $this->pageMapper->getPage($this->route);
+
+        $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
-                     'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle(),
+                     'pageTitle' => $webPage->getPageTitle(),
                      'post' => $this->postMapper->getPostByID($_GET['param2'])]; // don't use superglobal here
 
         return $tpl->render(array_merge($bindings, $globalBindings));

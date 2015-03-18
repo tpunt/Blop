@@ -2,7 +2,7 @@
 
 namespace app\views;
 
-use app\models\DataAccessLayer\WebPageContentMapper;
+use app\models\DataAccessLayer\WebPageMapper;
 use app\models\DataAccessLayer\ProductMapper;
 
 /**
@@ -15,40 +15,47 @@ use app\models\DataAccessLayer\ProductMapper;
 class ProductView
 {
     /**
-     * @var Twig_Environment|null     $tplEngine          The instance of the template engine.
-     * @var WebPageContentMapper|null $pageContentMapper  The instance of the WebPageContent data mapper.
-     * @var ProductMapper|null        $productMapper      The instance of the Product data mapper.
+     * @var Twig_Environment|null $tplEngine      The instance of the template engine
+     * @var string|               $route          The route taken by the application
+     * @var WebPageMapper|null    $pageMapper     The instance of the WebPage data mapper
+     * @var ProductMapper|null    $productMapper  The instance of the Product data mapper
      */
     private $tplEngine = null,
-            $pageContentMapper = null,
+            $route = '',
+            $pageMapper = null,
             $productMapper = null;
 
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
-     * @param Twig_Environment     $tplEngine          The instance of the template engine.
-     * @param ProductMapper        $productMapper      The instance of the Product data mapper.
-     * @param WebPageContentMapper $pageContentMapper  The instance of the WebPageContent data mapper.
+     * @param Twig_Environment $tplEngine      The instance of the template engine
+     * @param string|          $route          The route taken by the application
+     * @param ProductMapper    $productMapper  The instance of the Product data mapper
+     * @param WebPageMapper    $pageMapper     The instance of the WebPage data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, ProductMapper $productMapper, WebPageContentMapper $pageContentMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, ProductMapper $productMapper, WebPageMapper $pageMapper)
     {
         $this->tplEngine = $tplEngine;
-        $this->pageContentMapper = $pageContentMapper;
+        $this->route = $route;
+        $this->pageMapper = $pageMapper;
         $this->productMapper = $productMapper;
     }
 
     /**
      * Contains all of the binding logic in order to render the product.tpl file.
      *
-     * @param array   $globalBindings  The information to be bound to every template.
-     * @return string                  The rendered template.
+     * @param array   $globalBindings  The information to be bound to every template
+     * @return string                  The rendered template
      */
     public function render(array $globalBindings = [])
     {
-        $tpl = $this->tplEngine->loadTemplate('product.tpl');
+        $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
+        $webPage = $this->pageMapper->getPage($this->route);
+
+        $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''), // don't use superglobal here
-                     'pageTitle' => $this->pageContentMapper->getWebPage()->getWebPageTitle(),
+                     'pageTitle' => $webPage->getPageTitle(),
                      'product' => $this->productMapper->getProductByID($_GET['param2'])]; // don't use superglobal here
 
         return $tpl->render(array_merge($bindings, $globalBindings));

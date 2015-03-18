@@ -17,11 +17,11 @@ use app\models\DomainModel\WebPageContent;
 class WebPageContentMapper
 {
     /**
-     * @var PDO|null            $pdo   The PDO object.
-     * @var WebPageContent|null $page  The WebPageContent domain model object.
+     * @var PDO|null            $pdo          The PDO object
+     * @var WebPageContent|null $pageContent  The WebPageContent domain model object
      */
     private $pdo = null,
-            $page = null;
+            $pageContent = null;
 
     /**
      * Sets the PDO object to an instance variable.
@@ -39,9 +39,9 @@ class WebPageContentMapper
      * It takes the route name and passes it to the getWebPageContent method that populates the
      * WebPageContent domain object using data from the DB that corresponds to the route name.
      *
-     * @param string $page   The name of the route
+     * @param string $page  The name of the route
      */
-    public function setPage($page)
+    public function setPageContent($page)
     {
         $this->page = $this->getWebPageContent($page);
     }
@@ -49,7 +49,7 @@ class WebPageContentMapper
     /**
      * Gets the WebPageContent domain object.
      *
-     * @return WebPageContent   An object containing the page information
+     * @return WebPageContent  An object containing the page information
      */
     public function getWebPage()
     {
@@ -59,7 +59,8 @@ class WebPageContentMapper
     /**
      * Creates a new WebPageContent domain object containing information corresponding to the route.
      *
-     * @return WebPageContent   An object containing the page information
+     * @param  string $page    The page name to get the content for
+     * @return WebPageContent  An object containing the page information
      */
     public function getWebPageContent($page)
     {
@@ -75,5 +76,62 @@ class WebPageContentMapper
             $webPage->addWebPageContent($pageContent);
 
         return $webPage;
+    }
+
+    public function getAllWebPageContent()
+    {
+        $webPages = [];
+
+        $getWebPages = $this->pdo->query('SELECT * FROM WebPageContent');
+
+        while ($getWebPages->fetch(PDO::FETCH_ASSOC)) {
+            // $webPage = new WebPage
+        }
+
+        return $webPages;
+    }
+
+    /**
+     *
+     */
+    public function modifyWebPageContent($pageName, $postData)
+    {
+        if (!isset($postData['webPageTitle']))
+            throw new Exception('POST data incomplete - requires a web page title...');
+
+        $webPage = new WebPageContent($postData['webPageTitle']);
+        $webPage->setWebPageName($pageName);
+
+        if (!empty($postData['content']))
+            foreach ($postData['content'] as $content)
+                $webPage->addWebPageContent($content);
+
+        if (!$this->updateWebPageContent($webPage))
+            throw new Exception('Cannot update page content...');
+
+        // ok!
+    }
+
+    /**
+     *
+     */
+    public function updateWebPageContent(WebPageContent $webPage)
+    {
+        try {
+            $this->pdo->beginTransaction();
+
+            $updatePageTitle = $this->pdo->prepare('UPDATE WebPages SET page_title = :pageTitle WHERE web_page = :webPageName');
+            $updatePageTitle->execute(
+                ['pageTitle' => $webPage->getWebPageTitle(), 'webPageName' => $webPage->getWebPageName()]
+            );
+
+            if ($webPage->hasWebPageContent()) {
+                //
+            }
+        } catch(PDOException $e) {
+            $this->pdo->rollBack();
+
+            // handle transaction error here
+        }
     }
 }

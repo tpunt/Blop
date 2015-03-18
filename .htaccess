@@ -4,4 +4,4 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-l
 
-RewriteRule ^(([a-zA-Z0-9]+)?(/([a-zA-Z0-9]+)?(/([a-zA-Z0-9]+)?(/([a-zA-Z0-9]+)?)?)?)?)?$ index.php?param1=$2&param2=$4&param3=$6&param4=$8 [L]
+RewriteRule ^(([a-zA-Z0-9]+)?(/([a-zA-Z0-9]+)?(/([a-zA-Z0-9]+)?(/([a-zA-Z0-9]+)?)?)?)?)?$ index.php?param1=$2&param2=$4&param3=$6&param4=$8 [L,QSA]

@@ -14,21 +14,25 @@ use app\models\DataAccessLayer\UserMapper;
 class RegisterView
 {
     /**
-     * @var Twig_Environment|null  $tplEngine   The instance of the template engine.
-     * @var UserMapper|null        $userMapper  The instance of the User data mapper.
+     * @var Twig_Environment|null $tplEngine   The instance of the template engine
+     * @var string|               $route       The route taken by the application
+     * @var UserMapper|null       $userMapper  The instance of the User data mapper
      */
     private $tplEngine = null,
+            $route = '',
             $userMapper = null;
 
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
-     * @param Twig_Environment  $tplEngine   The instance of the template engine.
-     * @param UserMapper        $userMapper  The instance of the User data mapper.
+     * @param Twig_Environment $tplEngine   The instance of the template engine
+     * @param string|          $route       The route taken by the application
+     * @param UserMapper       $userMapper  The instance of the User data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, UserMapper $userMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, UserMapper $userMapper)
     {
         $this->tplEngine = $tplEngine;
+        $this->route = $route;
         $this->userMapper = $userMapper;
     }
 
@@ -40,7 +44,9 @@ class RegisterView
      */
     public function render(array $globalBindings = [])
     {
-        $tpl = $this->tplEngine->loadTemplate('register.tpl');
+        $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
+
+        $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = ['regError' => $this->userMapper->getError(),
                      'loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : '')];

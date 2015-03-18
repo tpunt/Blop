@@ -18,6 +18,7 @@ class AccountView
      * @var UserMapper|null        $userMapper  The instance of the User data mapper.
      */
     private $tplEngine = null,
+            $route = '',
             $userMapper = null;
 
     /**
@@ -26,9 +27,10 @@ class AccountView
      * @param Twig_Environment  $tplEngine   The instance of the template engine.
      * @param UserMapper        $userMapper  The instance of the User data mapper.
      */
-    public function __construct(\Twig_Environment $tplEngine, UserMapper $userMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, UserMapper $userMapper)
     {
         $this->tplEngine = $tplEngine;
+        $this->route = $route;
         $this->userMapper = $userMapper;
     }
 
@@ -40,8 +42,10 @@ class AccountView
      */
     public function render(array $globalBindings = [])
     {
-        $tpl = $this->tplEngine->loadTemplate('account.tpl');
+        $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
         $user = $this->userMapper->getUser($_SESSION['user']['user_id'], ['forename', 'surname', 'email']);
+
+        $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = [
             'loggedIn' => $_SESSION['user']['user_id'],

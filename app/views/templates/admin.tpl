@@ -7,6 +7,9 @@
 
         <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/global.css" />
         <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/{{ superRoute }}.css" />
+        {% if subRoute %}
+        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/{{ superRoute }}/{{ subRoute }}.css" />
+        {% endif %}
     </head>
     <body>
         {% include 'global/header.tpl' %}
@@ -15,7 +18,9 @@
             <aside id="accnav">
                 <ul>
                     <li><a href="{{ siteURI }}/{{ superRoute }}">Admin Overview</a></li>
-                    <li><a href="{{ siteURI }}/{{ superRoute }}/updateSiteContent">Update Site Content</a></li>
+                    <li><a href="{{ siteURI }}/{{ superRoute }}/pages">Update Site Content</a></li>
+                    <li><a href="{{ siteURI }}/{{ superRoute }}/posts">Manage Blog</a></li>
+                    <li><a href="{{ siteURI }}/{{ superRoute }}/products">Manage Products</a></li>
                 </ul>
             </aside>
 
