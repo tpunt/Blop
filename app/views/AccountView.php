@@ -14,8 +14,9 @@ use app\models\DataAccessLayer\UserMapper;
 class AccountView
 {
     /**
-     * @var Twig_Environment|null  $tplEngine   The instance of the template engine.
-     * @var UserMapper|null        $userMapper  The instance of the User data mapper.
+     * @var Twig_Environment|null $tplEngine   The instance of the template engine
+     * @var string|               $route       The route taken by the application
+     * @var UserMapper|null       $userMapper  The instance of the User data mapper
      */
     private $tplEngine = null,
             $route = '',
@@ -24,8 +25,9 @@ class AccountView
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
-     * @param Twig_Environment  $tplEngine   The instance of the template engine.
-     * @param UserMapper        $userMapper  The instance of the User data mapper.
+     * @param Twig_Environment $tplEngine   The instance of the template engine
+     * @param string|          $route       The route taken by the application
+     * @param UserMapper       $userMapper  The instance of the User data mapper
      */
     public function __construct(\Twig_Environment $tplEngine, $route, UserMapper $userMapper)
     {

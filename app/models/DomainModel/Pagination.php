@@ -26,7 +26,7 @@ class Pagination
     private $usage = '',
             $usages = ['products', 'posts'], // load in from config
             $pageNo = 1,
-            $perPageNo = 1, // load in from config file
+            $perPageNo = 10, // load in from config file
             $elementCount = 0,
             $validity = true,
             $from = 0;

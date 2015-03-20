@@ -44,7 +44,6 @@ class AdminPageView
     public function render(array $globalBindings = [])
     {
         $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
-        // $webPage = $this->webPageMapper->getPage(isset($_GET['page']) ? $_GET['page'] : '');
 
         $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 

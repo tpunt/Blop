@@ -26,18 +26,14 @@ abstract class AbstractPost
               $postCreatorID = 0;
 
     /**
-     * Sets the abstract post body.
+     * Validates and Sets the post ID.
      *
-     * The reason it only sets the body is because it's the only attribute that a Post and Comment
-     * object is gauranteed to have in common. Every other attribute tied to both of these objects
-     * are optional depending upon the situation.
-     *
-     * @param  string $postBody          The body of the post.
-     * @throws InvalidArgumentException  Thrown the post body is invalid.
+     * @param  int $postID               The ID of the post
+     * @throws InvalidArgumentException  Thrown the post ID is invalid.
      */
-    public function __construct($postBody)
+    public function __construct($postID)
     {
-        $this->setPostBody($postBody);
+        $this->setPostID($postID);
     }
 
     /**
@@ -48,7 +44,7 @@ abstract class AbstractPost
      */
     protected function setPostCreatorID($uid)
     {
-        if($uid < 1)
+        if ((!is_int($uid) && !ctype_digit($uid)) || $uid < 1)
             throw new \InvalidArgumentException('The user ID is invalid.');
 
         $this->postCreatorID = $uid;
@@ -79,7 +75,7 @@ abstract class AbstractPost
      */
     protected function setPostID($postID)
     {
-        if($postID < 1)
+        if ((!is_int($postID) && !ctype_digit($postID)) || $postID < 1)
             throw new \InvalidArgumentException('The post ID must be a natural number (except 0).');
 
         $this->postID = $postID;

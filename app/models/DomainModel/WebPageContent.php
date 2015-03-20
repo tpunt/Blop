@@ -21,9 +21,10 @@ class WebPageContent
     /**
      * Sets the web page title via a private validation function.
      *
-     * @param  string $webPageTitle      The title of the web page
-     * @throws InvalidArgumentException  Thrown if either the content ID is not an integer value
-     *                                   or if the content length is too small
+     * @param  int    $contentID         The ID of the content
+     * @param  string $content           The content
+     * @throws InvalidArgumentException  Thrown if either the content ID is not a valid integer
+     *                                   value or if the content length is too short
      */
     public function __construct($contentID, $content)
     {
@@ -34,7 +35,8 @@ class WebPageContent
     /**
      * Sets the ID of the content.
      *
-     * @param int $contentID  The associated ID to the content
+     * @param  int $contentID            The associated ID to the content
+     * @throws InvalidArgumentException  Thrown if the content ID is not a valid integer value
      */
     private function setContentID($contentID)
     {
@@ -47,7 +49,8 @@ class WebPageContent
     /**
      * Validates and sets the content piece.
      *
-     * @param string $content  The piece of content
+     * @param  string $content           The piece of content
+     * @throws InvalidArgumentException  Thrown if the content is too short
      */
     private function setContent($content)
     {

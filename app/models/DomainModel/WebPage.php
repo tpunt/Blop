@@ -25,7 +25,7 @@ class WebPage
      * Sets the web page title via a private validation function.
      *
      * @param  string $pageTitle         The title of the web page
-     * @throws InvalidArgumentException  Thrown if the page title being set is too short
+     * @throws InvalidArgumentException  Thrown if the page title is too short
      */
     public function __construct($pageTitle)
     {

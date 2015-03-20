@@ -2,6 +2,8 @@
 
 namespace app\views;
 
+use app\models\DataAccessLayer\UserMapper;
+
 /**
  * This is the view containing the binding logic for the 'Admin' page (using the templates/admin.tpl).
  *
@@ -12,22 +14,26 @@ namespace app\views;
 class AdminIndexView
 {
     /**
-     * @var Twig_Environment|null $tplEngine  The instance of the template engine
-     * @var string|               $route      The route taken by the application
+     * @var Twig_Environment|null $tplEngine   The instance of the template engine
+     * @var string|               $route       The route taken by the application
+     * @var UserMapper|null       $userMapper  The instance of the User data mapper
      */
     private $tplEngine = null,
-            $route = '';
+            $route = '',
+            $userMapper = null;
 
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
-     * @param Twig_Environment $tplEngine  The instance of the template engine
-     * @param string|          $route      The route taken by the application
+     * @param Twig_Environment $tplEngine   The instance of the template engine
+     * @param string|          $route       The route taken by the application
+     * @param UserMapper       $userMapper  The instance of the User data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, $route)
+    public function __construct(\Twig_Environment $tplEngine, $route, UserMapper $userMapper)
     {
         $this->tplEngine = $tplEngine;
         $this->route = $route;
+        $this->userMapper = $userMapper;
     }
 
     /**
@@ -39,12 +45,14 @@ class AdminIndexView
     public function render(array $globalBindings = [])
     {
         $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
+        $user = $this->userMapper->getUser($_SESSION['user']['user_id'], ['forename', 'surname']);
 
         $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = [
             'loggedIn' => $_SESSION['user']['user_id'],
-            'pLevel' => $_SESSION['user']['pLevel']
+            'pLevel' => $_SESSION['user']['pLevel'],
+            'user' => $user
         ];
 
         return $tpl->render(array_merge($bindings, $globalBindings));

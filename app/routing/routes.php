@@ -29,7 +29,9 @@ return [
     'admin' => [
         'index' => [['UserMapper'], 'AdminIndexView', 'AdminController'],
         'pages' => [['WebPageMapper'], 'AdminPagesView', ''],
-        'page' => [['WebPageMapper'], 'AdminPageView', 'AdminPageController']
+        'page' => [['WebPageMapper'], 'AdminPageView', 'AdminPageController'],
+        'posts' => [['PostMapper'], 'AdminPostsView', ''],
+        'post' => [['PostMapper'], 'AdminPostView', 'AdminPostController']
     ],
     'products' => [['ProductMapper', 'WebPageMapper'], 'ProductsView', 'ProductsController'],
     'product' => [['ProductMapper', 'WebPageMapper'], 'ProductView', ''],

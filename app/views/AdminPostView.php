@@ -11,7 +11,7 @@ use app\models\DataAccessLayer\PostMapper;
  * @author   Thomas Punt
  * @license  MIT
  */
-class AdminPostsView
+class AdminPostView
 {
     /**
      * @var Twig_Environment|null $tplEngine   The instance of the template engine
@@ -45,14 +45,18 @@ class AdminPostsView
     public function render(array $globalBindings = [])
     {
         $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
-        $posts = $this->postMapper->getPostsOverview();
+
+        if (isset($_GET['postID']))
+            $post = $this->postMapper->getPostByID($_GET['postID']);
+        else
+            $post = '';
 
         $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = [
             'loggedIn' => $_SESSION['user']['user_id'],
             'pLevel' => $_SESSION['user']['pLevel'],
-            'posts' => $posts
+            'post' => $post
         ];
 
         return $tpl->render(array_merge($bindings, $globalBindings));

@@ -14,7 +14,7 @@ use app\models\DataAccessLayer\WebPageMapper;
 class AdminPageController extends AdminController
 {
     /**
-     * @var WebPageContentMapper|null  Used to manipulate the content of the website.
+     * @var WebPageMapper|null  Used to manipulate the content of the website.
      */
     private $webPageMapper = null;
 
@@ -22,7 +22,7 @@ class AdminPageController extends AdminController
      * Invokes the parent contstructor to perform a check to see whether the user is logged in.
      * If they aren't, then they will be relocated to the login page.
      *
-     * @param WebPageContentMapper $webPageContentMapper  Used to alter the content of the website.
+     * @param WebPageMapper $webPageMapper  Used to alter the content of the website
      */
     public function __construct(WebPageMapper $webPageMapper)
     {

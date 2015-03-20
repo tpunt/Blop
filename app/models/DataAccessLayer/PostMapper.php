@@ -18,11 +18,13 @@ use app\models\DomainModel\Pagination;
 class PostMapper
 {
     /**
-     * @var PDO|null        $pdo         The PDO object.
-     * @var Pagination|null $pagination  The Pagination domain model object.
+     * @var PDO|null        $pdo         The PDO object
+     * @var Pagination|null $pagination  The Pagination domain model object
+     * @var string|         $error       The error string if something goes wrong
      */
     private $pdo = null,
-            $pagination = null;
+            $pagination = null,
+            $error = '';
 
     /**
      * Assign the PDO object to an object instance.
@@ -68,8 +70,53 @@ class PostMapper
                                          FROM Posts LIMIT {$from}, {$perPageNo}");
 
         while($p = $postsQuery->fetch(\PDO::FETCH_ASSOC))
-            array_push($posts,
-                       new Post($p['post_title'], $p['excerpt'], $p['user_id'], new \DateTime($p['post_date']), $p['post_id']));
+            $posts[] = (
+                new Post($p['post_id'])
+            )->setPostTitle(
+                $p['post_title']
+            )->setPostBody(
+                $p['excerpt']
+            )->setPostCreatorID(
+                $p['user_id']
+            )->setPostDate(
+                new \DateTime($p['post_date'])
+            );
+
+        return $posts;
+    }
+
+    /**
+     * Gets the overview information of a group of posts corresponding to the range
+     * of post ID's specified via pagination.
+     *
+     * @return array  An array of Post objects containing individual post information.
+     */
+    public function getPostsOverview()
+    {
+        $posts = [];
+
+        if (!$this->pagination)
+            $this->newPagination(1);
+
+        if (!$this->pagination->getValidity())
+            return $posts;
+
+        $from = $this->pagination->getFrom();
+        $perPageNo = $this->pagination->getPerPageNo();
+
+        $postsQuery = $this->pdo->query("SELECT post_id, post_title, post_date, user_id
+                                         FROM Posts LIMIT {$from}, {$perPageNo}");
+
+        while ($p = $postsQuery->fetch(\PDO::FETCH_ASSOC))
+            $posts[] = (
+                new Post($p['post_id'])
+            )->setPostTitle(
+                $p['post_title']
+            )->setPostCreatorID(
+                $p['user_id']
+            )->setPostDate(
+                new \DateTime($p['post_date'])
+            );
 
         return $posts;
     }
@@ -82,16 +129,26 @@ class PostMapper
      */
     public function getPostByID($postID)
     {
-        $postID = (int) $postID;
+        $post = new Post($postID);
 
-        $p = $this->pdo->query("SELECT post_title, post_content, post_date, user_id FROM Posts WHERE post_id = {$postID}")->fetch(\PDO::FETCH_ASSOC);
+        $p = $this->pdo->query(
+            "SELECT post_title, post_content, post_date, user_id FROM Posts WHERE post_id = {$post->getPostID()}"
+        )->fetch(\PDO::FETCH_ASSOC);
 
         if(!$p)
             return null;
 
         // grab comments here.
 
-        $post = new Post($p['post_title'], $p['post_content'], $p['user_id'], new \DateTime($p['post_date']), $postID);
+        $post->setPostTitle(
+            $p['post_title']
+        )->setPostBody(
+            $p['post_content']
+        )->setPostCreatorID(
+            $p['user_id']
+        )->setPostDate(
+            new \DateTime($p['post_date'])
+        );
 
         // add comments here.
 
@@ -103,8 +160,72 @@ class PostMapper
      *
      * @param array $postData  The POST data sent from the new thread form.
      */
-    public function addNewThread(array $postData)
+    public function newPost(array $postData, $userID)
     {
-    	//$insertThreadQuery = $this->pdo->prepare("INSERT INTO ") // finish query. Update DB first...
+        if (empty($postData) || !isset($postData['postTitle'], $postData['postBody']))
+            throw new \InvalidArgumentException('HTTP POST data cannot be empty.');
+
+        try {
+            $post = (
+                new Post
+            )->setPostTitle(
+                $postData['postTitle']
+            )->setPostBody(
+                $postData['postBody']
+            )->setPostCreatorID(
+                $userID
+            );
+        } catch (\InvalidArgumentException $e) {
+            $this->error = 'Title and/or content fields are empty.';
+            return;
+        }
+
+    	$insertPostQuery = $this->pdo->prepare('INSERT INTO Posts VALUES (NULL, ?, ?, NOW(), 0, ?)');
+        $insertPostQuery->execute([$post->getPostTitle(), $post->getPostBody(), $post->getPostCreatorID()]);
+
+        return $this->pdo->lastInsertId();
+    }
+
+    public function modifyPost(array $postData, $postID)
+    {
+        if (empty($postData) || !isset($postData['postTitle'], $postData['postBody']))
+            throw new \InvalidArgumentException('HTTP POST data cannot be empty.');
+
+        try {
+            $post = (new Post($postID))->setPostTitle($postData['postTitle'])->setPostBody($postData['postBody']);
+        } catch (\InvalidArgumentException $e) {
+            $this->error = $e->getMessage();
+            return;
+        }
+
+        $postUpdateQuery = $this->pdo->prepare('UPDATE Posts SET post_title = ?, post_content = ? WHERE post_id = ?');
+        $postUpdateQuery->execute([$post->getPostTitle(), $post->getPostBody(), $post->getPostID()]);
+
+        header("Location: /post/{$post->getPostID()}");
+        die;
+    }
+
+    public function deletePost(array $postData, $postID)
+    {
+        if (empty($postData) || !isset($postData['confirmDeletion']))
+            throw new \InvalidArgumentException('HTTP POST data cannot be empty.');
+
+        try {
+            $post = new Post($postID);
+        } catch (\InvalidArgumentException $e) {
+            $this->error = $e->getMessage();
+            return;
+        }
+
+        if (!isset($postData['confirmation']) || $postData['confirmation'] !== 'on') {
+            header("Location: /admin/post?postID={$post->getPostID()}");
+            die;
+        }
+
+        // change to update on post_deleted = true ?
+        $this->pdo->exec("DELETE FROM Posts WHERE post_id = {$post->getPostID()}");
+
+        header('Location: /admin/posts');
+        die;
     }
 }

@@ -14,9 +14,9 @@ use app\models\DataAccessLayer\WebPageMapper;
 class AboutMeView
 {
     /**
-     * @var Twig_Environment|null $tplEngine   The instance of the template engine.
+     * @var Twig_Environment|null $tplEngine   The instance of the template engine
      * @var string|               $route       The route taken by the application
-     * @var WebPageMapper|null    $pageMapper  The instance of the WebPage data mapper.
+     * @var WebPageMapper|null    $pageMapper  The instance of the WebPage data mapper
      */
     private $tplEngine = null,
             $route = '',
@@ -25,9 +25,9 @@ class AboutMeView
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
-     * @param Twig_Environment $tplEngine  The instance of the template engine
-     * @param string|          $route      The route taken by the application
-     * @param WebPageMapper $pageMapper    The instance of the WebPage data mapper
+     * @param Twig_Environment $tplEngine   The instance of the template engine
+     * @param string|          $route       The route taken by the application
+     * @param WebPageMapper    $pageMapper  The instance of the WebPage data mapper
      */
     public function __construct(\Twig_Environment $tplEngine, $route, WebPageMapper $pageMapper)
     {
