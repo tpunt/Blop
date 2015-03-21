@@ -10,6 +10,7 @@
         {% if subRoute %}
         <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/{{ superRoute }}/{{ subRoute }}.css" />
         {% endif %}
+        <script src="{{ siteURI }}/public/javascript/{{ superRoute }}/global.js"></script>
     </head>
     <body>
         {% include 'global/header.tpl' %}

@@ -205,10 +205,10 @@ class PostMapper
         die;
     }
 
-    public function deletePost(array $postData, $postID)
+    public function deletePost($postID) // (array $postData, $postID)
     {
-        if (empty($postData) || !isset($postData['confirmDeletion']))
-            throw new \InvalidArgumentException('HTTP POST data cannot be empty.');
+        // if (empty($postData) || !isset($postData['confirmDeletion']))
+        //     throw new \InvalidArgumentException('HTTP POST data cannot be empty.');
 
         try {
             $post = new Post($postID);
@@ -217,10 +217,10 @@ class PostMapper
             return;
         }
 
-        if (!isset($postData['confirmation']) || $postData['confirmation'] !== 'on') {
-            header("Location: /admin/post?postID={$post->getPostID()}");
-            die;
-        }
+        // if (!isset($postData['confirmation']) || $postData['confirmation'] !== 'on') {
+        //     header("Location: /admin/post?postID={$post->getPostID()}");
+        //     die;
+        // }
 
         // change to update on post_deleted = true ?
         $this->pdo->exec("DELETE FROM Posts WHERE post_id = {$post->getPostID()}");

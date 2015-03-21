@@ -1,14 +1,12 @@
 <table>
     <tr>
-        <th class="th1">Page Name</th>
-        <th class="th2">Page URL</th>
-        <th class="th3">Page Title</th>
+        <th colspan="3" class="th1">Page Name</th>
     </tr>
     {% for page in pages %}
     <tr>
-        <td>{{ page.getPageName }}</td>
-        <td><a href="{{ siteURI }}/{{ page.getPageName }}">{{ page.getPageName }}</a></td>
-        <td><a href="{{ siteURI }}/{{ superRoute }}/page?page={{ page.getPageName }}">{{ page.getPageTitle }}</a></td>
+        <td>{{ page.getPageTitle }}</td>
+        <td class="btn view"><a href="{{ siteURI }}/{{ page.getPageName }}">View</a></td>
+        <td class="btn edit"><a href="{{ siteURI }}/{{ superRoute }}/page?page={{ page.getPageName }}">Edit</a></td>
     </tr>
     {% endfor %}
 </table>

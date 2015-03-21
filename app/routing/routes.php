@@ -28,9 +28,9 @@ return [
     ],
     'admin' => [
         'index' => [['UserMapper'], 'AdminIndexView', 'AdminController'],
-        'pages' => [['WebPageMapper'], 'AdminPagesView', ''],
+        'pages' => [['WebPageMapper'], 'AdminPagesView', 'AdminController'],
         'page' => [['WebPageMapper'], 'AdminPageView', 'AdminPageController'],
-        'posts' => [['PostMapper'], 'AdminPostsView', ''],
+        'posts' => [['PostMapper'], 'AdminPostsView', 'AdminController'],
         'post' => [['PostMapper'], 'AdminPostView', 'AdminPostController']
     ],
     'products' => [['ProductMapper', 'WebPageMapper'], 'ProductsView', 'ProductsController'],

@@ -46,6 +46,6 @@ class AdminPostController extends AdminController
 
     public function delete()
     {
-        $this->postMapper->deletePost($_POST, isset($_GET['postID']) ? $_GET['postID'] : '');
+        $this->postMapper->deletePost(isset($_GET['postID']) ? $_GET['postID'] : '');
     }
 }
