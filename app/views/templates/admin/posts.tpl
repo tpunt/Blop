@@ -1,6 +1,9 @@
 <table id="postsDisplayTable">
     <tr>
-        <th colspan="4" class="th1">Post Name</th>
+        <th colspan="3" class="th1">Post Name</th>
+        <th class="th2 btn">
+            <a href="{{ siteURI }}/{{ superRoute }}/post" id="newPostButton">New</a>
+        </th>
     </tr>
     {% for post in posts %}
     <tr>
