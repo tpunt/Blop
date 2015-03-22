@@ -89,6 +89,8 @@ $rows = [
     'INSERT INTO WebPages VALUES
     ("index", "Personal Training | Lindsey\'s PT"),
     ("about", "About Me | Lindsey\'s PT"),
+    ("register", "User Registration | Lindsey\'s PT"),
+    ("login", "User Login | Lindsey\'s PT"),
     ("products", "Products | Lindsey\'s PT"),
     ("product", " | Lindsey\'s PT"),
     ("posts", "Blog Roll | Lindsey\'s PT"),
