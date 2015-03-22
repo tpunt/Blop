@@ -19,7 +19,7 @@
 
 return [
     'index' => [['WebPageMapper'], 'IndexView', ''],
-    'aboutme' => [['WebPageMapper'], 'AboutMeView', ''],
+    'about' => [['WebPageMapper'], 'AboutMeView', ''],
     'login' => [['UserMapper'], 'LoginView', 'LoginController'],
     'register' => [['UserMapper'], 'RegisterView', 'RegisterController'],
     'account' => [

@@ -27,7 +27,7 @@
     -->
     <nav>
         <a href="{{ siteURI }}">Home</a>
-        <a href="{{ siteURI }}/aboutme">About Me</a>
+        <a href="{{ siteURI }}/about">About Me</a>
         <a href="{{ siteURI }}/products">Products</a>
         <a href="{{ siteURI }}/posts">Blog</a>
         <a href="#5">Contact Me</a>

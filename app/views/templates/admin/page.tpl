@@ -15,5 +15,5 @@
     {% endfor %}
     <div>
         <input type="submit" name="updateContent" value="Update Content" />
-    <div>
+    </div>
 </form>
