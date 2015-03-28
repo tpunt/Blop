@@ -21,7 +21,8 @@ class Post extends AbstractPost
      */
     private $postTitle = '',
             $postViews = 0,
-            $comments = [];
+            $comments = [],
+            $publishStatus = false;
 
     /**
      * Validates and sets the post ID.
@@ -107,6 +108,19 @@ class Post extends AbstractPost
     public function setPostViews($views)
     {
         $this->postViews = $views;
+
+        return $this;
+    }
+
+    /**
+     * Sets the status of whether the post has been published or not.
+     *
+     * @param  int $published  Whether the post has been published or not
+     * @return Post            The current instance
+     */
+    public function setPublishStatus($published)
+    {
+        $this->publishStatus = $published;
 
         return $this;
     }

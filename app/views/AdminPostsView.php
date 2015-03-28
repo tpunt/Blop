@@ -45,7 +45,7 @@ class AdminPostsView
     public function render(array $globalBindings = [])
     {
         $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
-        $posts = $this->postMapper->getPostsOverview();
+        $posts = $this->postMapper->getPostsOverview(false);
 
         $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 

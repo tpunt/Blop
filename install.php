@@ -4,9 +4,9 @@
 // Delete this script after installation
 
 // Connection details
-$host = '';
-$user = '';
-$pws = '';
+$host = 'localhost';
+$user = 'root';
+$pws = 'root';
 
 $pdo = new PDO("mysql:host={$host}", $user, $pws);
 
@@ -76,6 +76,7 @@ $tables = [
         post_content TEXT NOT NULL,
         post_date DATETIME NOT NULL,
         post_views INT UNSIGNED DEFAULT 0,
+        published BOOL DEFAULT 0,
         user_id INT UNSIGNED NOT NULL,
         FOREIGN KEY (user_id) REFERENCES LindseysPT.Users (user_id) ON UPDATE CASCADE ON DELETE NO ACTION
     )ENGINE = InnoDB;'

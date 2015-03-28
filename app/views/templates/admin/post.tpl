@@ -8,15 +8,20 @@
         <input type="text" name="postTitle" id="postTitle" value="{{ post.getPostTitle }}" />
     </div>
 
-
     <div>
         <label for="postBody"> Post Body:</label>
         <textarea name="postBody" id="postBody">{{ post.getPostBody }}</textarea><br />
     </div>
     {% if post %}
-    <input type="submit" name="updatePost" value="Update Post" />
+    <input type="submit" name="updatePost" value="Save Post" />
+        {% if post.getPublishStatus %}
+        <input type="submit" name="unpublishPost" id="publisher" value="Unpublish Post" />
+        {% else %}
+        <input type="submit" name="publishPost" id="publisher" value="Publish Post" />
+        {% endif %}
     {% else %}
-    <input type="submit" name="createPost" value="Create Post" />
+    <input type="submit" name="createPost" value="Save Post" />
+    <input type="submit" name="publishPost" id="publisher" value="Publish Post" />
     {% endif %}
 </form>
 

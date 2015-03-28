@@ -47,7 +47,7 @@ class AdminPostView
         $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
 
         if (isset($_GET['postID']))
-            $post = $this->postMapper->getPostByID($_GET['postID']);
+            $post = $this->postMapper->getPostByID($_GET['postID'], false);
         else
             $post = '';
 

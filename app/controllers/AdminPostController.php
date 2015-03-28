@@ -36,12 +36,22 @@ class AdminPostController extends AdminController
      */
     public function edit()
     {
-        $this->postMapper->modifyPost($_POST, isset($_GET['postID']) ? $_GET['postID'] : '');
+        $publish = false;
+
+        if (isset($_POST['publishPost']))
+            $publish = true;
+
+        $this->postMapper->modifyPost($_POST, isset($_GET['postID']) ? $_GET['postID'] : '', $publish);
     }
 
     public function create()
     {
-        $this->postMapper->newPost($_POST, $_SESSION['user']['user_id']);
+        $publish = false;
+
+        if (isset($_POST['publishPost']))
+            $publish = true;
+
+        $this->postMapper->newPost($_POST, $_SESSION['user']['user_id'], $publish);
     }
 
     public function delete()

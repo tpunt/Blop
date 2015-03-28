@@ -55,6 +55,7 @@ class ProductView
         $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''), // don't use superglobal here
+                     'pLevel' => $_SESSION['user']['pLevel'],
                      'pageTitle' => $webPage->getPageTitle(),
                      'pageDescription' => $webPage->getPageDescription(),
                      'pageKeywords' => $webPage->getPageKeywords(),

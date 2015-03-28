@@ -53,7 +53,7 @@ class PostMapper
      *
      * @return array  An array of Post objects containing individual post information.
      */
-    public function getPosts()
+    public function getPosts($publishedOnly)
     {
         $posts = [];
 
@@ -65,9 +65,10 @@ class PostMapper
 
         $from = $this->pagination->getFrom();
         $perPageNo = $this->pagination->getPerPageNo();
+        $published = (int) $publishedOnly;
 
         $postsQuery = $this->pdo->query("SELECT post_id, post_title, LEFT(post_content, 50) as excerpt, post_date, user_id
-                                         FROM Posts LIMIT {$from}, {$perPageNo}");
+                                         FROM Posts WHERE published >= {$published} LIMIT {$from}, {$perPageNo}");
 
         while($p = $postsQuery->fetch(\PDO::FETCH_ASSOC))
             $posts[] = (
@@ -80,6 +81,8 @@ class PostMapper
                 $p['user_id']
             )->setPostDate(
                 new \DateTime($p['post_date'])
+            )->setPublishStatus(
+                $publishedOnly
             );
 
         return $posts;
@@ -89,9 +92,10 @@ class PostMapper
      * Gets the overview information of a group of posts corresponding to the range
      * of post ID's specified via pagination.
      *
-     * @return array  An array of Post objects containing individual post information.
+     * @param  bool  $publishedOnly  Whether to retrieve posts that have been unpublished or not
+     * @return array                 An array of Post objects containing individual post information
      */
-    public function getPostsOverview()
+    public function getPostsOverview($publishedOnly)
     {
         $posts = [];
 
@@ -103,9 +107,10 @@ class PostMapper
 
         $from = $this->pagination->getFrom();
         $perPageNo = $this->pagination->getPerPageNo();
+        $published = (int) $publishedOnly;
 
         $postsQuery = $this->pdo->query("SELECT post_id, post_title, post_date, user_id
-                                         FROM Posts LIMIT {$from}, {$perPageNo}");
+                                         FROM Posts WHERE published >= {$published} LIMIT {$from}, {$perPageNo}");
 
         while ($p = $postsQuery->fetch(\PDO::FETCH_ASSOC))
             $posts[] = (
@@ -116,6 +121,8 @@ class PostMapper
                 $p['user_id']
             )->setPostDate(
                 new \DateTime($p['post_date'])
+            )->setPublishStatus(
+                $publishedOnly
             );
 
         return $posts;
@@ -124,15 +131,19 @@ class PostMapper
     /**
      * Gets a post corresponding to the specified post ID.
      *
-     * @param  int  $postID  The ID of the post to be returned.
-     * @return Post          A Post object containing the post information.
+     * @param  int  $postID  The ID of the post to be returned
+     * @param  bool $postID  Whether the post to get has been published or not
+     * @return Post          A Post object containing the post information
      */
-    public function getPostByID($postID)
+    public function getPostByID($postID, $publishedOnly)
     {
         $post = new Post($postID);
+        $published = (int) $publishedOnly;
 
         $p = $this->pdo->query(
-            "SELECT post_title, post_content, post_date, user_id FROM Posts WHERE post_id = {$post->getPostID()}"
+            "SELECT post_title, post_content, post_date, user_id
+             FROM Posts
+             WHERE post_id = {$post->getPostID()} AND published >= {$published}"
         )->fetch(\PDO::FETCH_ASSOC);
 
         if(!$p)
@@ -148,6 +159,8 @@ class PostMapper
             $p['user_id']
         )->setPostDate(
             new \DateTime($p['post_date'])
+        )->setPublishStatus(
+            $publishedOnly
         );
 
         // add comments here.
@@ -160,7 +173,7 @@ class PostMapper
      *
      * @param array $postData  The POST data sent from the new thread form.
      */
-    public function newPost(array $postData, $userID)
+    public function newPost(array $postData, $userID, $publish = false)
     {
         if (empty($postData) || !isset($postData['postTitle'], $postData['postBody']))
             throw new \InvalidArgumentException('HTTP POST data cannot be empty.');
@@ -174,20 +187,27 @@ class PostMapper
                 $postData['postBody']
             )->setPostCreatorID(
                 $userID
+            )->setPublishStatus(
+                $publish
             );
         } catch (\InvalidArgumentException $e) {
             $this->error = 'Title and/or content fields are empty.';
             return;
         }
 
-    	$insertPostQuery = $this->pdo->prepare('INSERT INTO Posts VALUES (NULL, ?, ?, NOW(), 0, ?)');
-        $insertPostQuery->execute([$post->getPostTitle(), $post->getPostBody(), $post->getPostCreatorID()]);
+    	$insertPostQuery = $this->pdo->prepare('INSERT INTO Posts VALUES (NULL, ?, ?, NOW(), 0, ?, ?)');
+        $insertPostQuery->execute([$post->getPostTitle(), $post->getPostBody(), (int) $post->getPublishStatus(), $post->getPostCreatorID()]);
 
-        header("Location: /post/{$this->pdo->lastInsertId()}");
+        if ($publish) {
+            header("Location: /post/{$this->pdo->lastInsertId()}");
+            die;
+        }
+        
+        header('Location: /admin/posts');
         die;
     }
 
-    public function modifyPost(array $postData, $postID)
+    public function modifyPost(array $postData, $postID, $publish = false)
     {
         if (empty($postData) || !isset($postData['postTitle'], $postData['postBody']))
             throw new \InvalidArgumentException('HTTP POST data cannot be empty.');
@@ -199,10 +219,15 @@ class PostMapper
             return;
         }
 
-        $postUpdateQuery = $this->pdo->prepare('UPDATE Posts SET post_title = ?, post_content = ? WHERE post_id = ?');
-        $postUpdateQuery->execute([$post->getPostTitle(), $post->getPostBody(), $post->getPostID()]);
+        $postUpdateQuery = $this->pdo->prepare('UPDATE Posts SET post_title = ?, post_content = ?, published = ? WHERE post_id = ?');
+        $postUpdateQuery->execute([$post->getPostTitle(), $post->getPostBody(), (int) $publish, $post->getPostID()]);
 
-        header("Location: /post/{$post->getPostID()}");
+        if ($publish) {
+            header("Location: /post/{$post->getPostID()}");
+            die;
+        }
+
+        header('Location: /admin/posts');
         die;
     }
 
