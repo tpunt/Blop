@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\DataAccessLayer\WebPageMapper;
 use app\models\DataAccessLayer\PostMapper;
 
 /**
@@ -14,9 +15,11 @@ use app\models\DataAccessLayer\PostMapper;
 class PostsController
 {
     /**
-     * @var PostMapper|null  Holds the ProductMapper object from the data access layer.
+     * @var WebPageMapper|null $pageMapper  The instance of the WebPage data mapper
+     * @var PostMapper|null    $postMapper  Holds the ProductMapper object from the data access layer
      */
-    private $postMapper = null;
+    private $pageMapper = null,
+            $postMapper = null;
 
     /**
      * Sets the Product domain object mapper.
@@ -24,9 +27,10 @@ class PostsController
      * This method purposefully chooses to ignore the second argument being passed to it
      * (the WebPageContentMapper object) because the controller does not need such an object.
      *
-     * @param ProductMapper $productMapper  The ProductMapper object from the data access layer.
+     * @param WebPageMapper $pageMapper     The instance of the WebPage data mapper
+     * @param ProductMapper $productMapper  The ProductMapper object from the data access layer
      */
-    public function __construct(PostMapper $postMapper)
+    public function __construct(WebPageMapper $pageMapper, PostMapper $postMapper)
     {
         $this->postMapper = $postMapper;
     }

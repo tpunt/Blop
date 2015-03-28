@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\DataAccessLayer\WebPageMapper;
 use app\models\DataAccessLayer\UserMapper;
 
 /**
@@ -23,7 +24,7 @@ class LoginController
      *
      * @param UserMapper $userMapper  The UserMapper object from the data access layer.
      */
-    public function __construct(UserMapper $userMapper)
+    public function __construct(WebPageMapper $webPageMapper, UserMapper $userMapper)
     {
         if(isset($_SESSION['user'])) { // Should I check to see if a user is logged in here?
             header('Location: /account');

@@ -30,10 +30,10 @@ class ProductView
      *
      * @param Twig_Environment $tplEngine      The instance of the template engine
      * @param string|          $route          The route taken by the application
-     * @param ProductMapper    $productMapper  The instance of the Product data mapper
      * @param WebPageMapper    $pageMapper     The instance of the WebPage data mapper
+     * @param ProductMapper    $productMapper  The instance of the Product data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, $route, ProductMapper $productMapper, WebPageMapper $pageMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, WebPageMapper $pageMapper, ProductMapper $productMapper)
     {
         $this->tplEngine = $tplEngine;
         $this->route = $route;
@@ -44,7 +44,7 @@ class ProductView
     /**
      * Contains all of the binding logic in order to render the product.tpl file.
      *
-     * @param array   $globalBindings  The information to be bound to every template
+     * @param  array  $globalBindings  The information to be bound to every template
      * @return string                  The rendered template
      */
     public function render(array $globalBindings = [])
@@ -56,6 +56,8 @@ class ProductView
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''), // don't use superglobal here
                      'pageTitle' => $webPage->getPageTitle(),
+                     'pageDescription' => $webPage->getPageDescription(),
+                     'pageKeywords' => $webPage->getPageKeywords(),
                      'product' => $this->productMapper->getProductByID($_GET['param2'])]; // don't use superglobal here
 
         return $tpl->render(array_merge($bindings, $globalBindings));

@@ -19,5 +19,10 @@ class AdminController extends AccountController
     public function __construct()
     {
         parent::__construct();
+
+        if ($_SESSION['user']['pLevel'] != 1) {
+            header('Location: /account');
+            die;
+        }
     }
 }

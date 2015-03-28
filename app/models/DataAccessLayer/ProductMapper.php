@@ -65,7 +65,7 @@ class ProductMapper
         $perPageNo = $this->pagination->getPerPageNo();
 
         $productsQuery = $this->pdo->query("SELECT product_id, product_name, stock_level, price, preview_photo
-                                            FROM products LIMIT {$from}, {$perPageNo}");
+                                            FROM Products LIMIT {$from}, {$perPageNo}");
 
         while($p = $productsQuery->fetch(\PDO::FETCH_ASSOC))
             array_push($products, new Product($p['product_name'], $p['stock_level'], $p['price'], $p['preview_photo'], $p['product_id']));
@@ -84,7 +84,7 @@ class ProductMapper
         $pID = (int) $pID;
 
         $p = $this->pdo->query("SELECT product_name, product_description, stock_level, price, preview_photo
-                                           FROM products WHERE product_id = {$pID}")->fetch(\PDO::FETCH_ASSOC);
+                                           FROM Products WHERE product_id = {$pID}")->fetch(\PDO::FETCH_ASSOC);
 
         if(!$p)
             return null;

@@ -3,6 +3,7 @@
 namespace app\views;
 
 use app\models\DataAccessLayer\UserMapper;
+use app\models\DataAccessLayer\WebPageMapper;
 
 /**
  * This is the view containing the binding logic for the 'login' page (using the templates/login.tpl).
@@ -14,12 +15,14 @@ use app\models\DataAccessLayer\UserMapper;
 class LoginView
 {
     /**
-     * @var Twig_Environment|null $tplEngine   The instance of the template engine.
+     * @var Twig_Environment|null $tplEngine   The instance of the template engine
      * @var string|               $route       The route taken by the application
-     * @var UserMapper|null       $userMapper  The instance of the User data mapper.
+     * @var UserMapper|null       $userMapper  The instance of the User data mapper
+     * @var WebPageMapper|null    $pageMapper  The instance of the WebPage data mapper
      */
     private $tplEngine = null,
             $route = '',
+            $pageMapper = '',
             $userMapper = null;
 
     /**
@@ -27,12 +30,14 @@ class LoginView
      *
      * @param Twig_Environment $tplEngine   The instance of the template engine
      * @param string|          $route       The route taken by the application
+     * @param WebPageMapper    $pageMapper  The instance of the WebPage data mapper
      * @param UserMapper       $userMapper  The instance of the User data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, $route, UserMapper $userMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, WebPageMapper $pageMapper, UserMapper $userMapper)
     {
         $this->tplEngine = $tplEngine;
         $this->route = $route;
+        $this->pageMapper = $pageMapper;
         $this->userMapper = $userMapper;
     }
 
@@ -45,10 +50,14 @@ class LoginView
     public function render(array $globalBindings = [])
     {
         $route = strpos($this->route, '/') !== false ? explode('/', $this->route)[0] : $this->route;
+        $webPage = $this->pageMapper->getPage($this->route);
 
         $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
         $bindings = ['loginError' => $this->userMapper->getError(),
+                     'pageTitle' => $webPage->getPageTitle(),
+                     'pageDescription' => $webPage->getPageDescription(),
+                     'pageKeywords' => $webPage->getPageKeywords(),
                      'loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : '')];
 
         return $tpl->render(array_merge($bindings, $globalBindings));

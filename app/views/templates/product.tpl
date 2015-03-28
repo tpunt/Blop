@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
         <meta charset="utf-8" />
+        <meta description="{{ pageDescription }}" />
+        <meta keywords="{{ pageKeywords }}" />
 
         <title>{{ pageTitle }}{{product.getProductName }}</title>
 

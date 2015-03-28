@@ -2,6 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
         <meta charset="utf-8" />
+        <meta description="{{ pageDescription }}" />
+        <meta keywords="{{ pageKeywords }}" />
 
         <title>{{ pageTitle }}{{post.getPostTitle }}</title>
 
@@ -13,10 +15,10 @@
 
         <section id="mainframe">
 
-            <p>Posts listing overview... (add this descr to database)</p><!-- pagination here instead? -->
+            <h1>Blog Entries</h1><!-- pagination here instead? -->
 
-            {% if posts is empty %} <!-- needed? depends on error handling of no results from PHP -->
-            <p>No products to show... (add to db?)</p>
+            {% if posts is empty %}
+            <p>No posts to show!</p>
             {% else %}
                 {% for post in posts %}
             <section class="postPreview">

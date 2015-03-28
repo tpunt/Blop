@@ -48,20 +48,21 @@ class WebPageMapper
     /**
      * Gets the WebPage domain object.
      *
-     * @return WebPage  An object containing the page information
+     * @param  string $route  The name of the route
+     * @return WebPage        An object containing the page information
      */
     public function getPage($route)
     {
         if (empty($route)) {
-            header('Location: /admin/pages');
+            header('Location: /');
             die;
         }
 
-        $pageTitleQuery = $this->pdo->prepare('SELECT page_title FROM WebPages WHERE web_page = ?');
+        $pageTitleQuery = $this->pdo->prepare('SELECT page_title, page_description, page_keywords FROM WebPages WHERE web_page = ?');
         $pageTitleQuery->execute([$route]);
 
         if (!$page = $pageTitleQuery->fetch(\PDO::FETCH_ASSOC)) {
-            header('Location: /admin/pages');
+            header('Location: /');
             die;
         }
 

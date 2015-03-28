@@ -22,23 +22,23 @@ class PostsView
      */
     private $tplEngine = null,
             $route = '',
-            $postMapper = null,
-            $pageMapper = null;
+            $pageMapper = null,
+            $postMapper = null;
 
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
      * @param Twig_Environment $tplEngine   The instance of the template engine
      * @param string|          $route       The route taken by the application
-     * @param PostMapper       $postMapper  The instance of the Post data mapper
      * @param WebPageMapper    $pageMapper  The instance of the WebPage data mapper
+     * @param PostMapper       $postMapper  The instance of the Post data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, $route, PostMapper $postMapper, WebPageMapper $pageMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, WebPageMapper $pageMapper, PostMapper $postMapper)
     {
         $this->tplEngine = $tplEngine;
         $this->route = $route;
-        $this->postMapper = $postMapper;
         $this->pageMapper = $pageMapper;
+        $this->postMapper = $postMapper;
     }
 
     /**
@@ -56,6 +56,8 @@ class PostsView
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
                      'pageTitle' => $webPage->getPageTitle(),
+                     'pageDescription' => $webPage->getPageDescription(),
+                     'pageKeywords' => $webPage->getPageKeywords(),
                      'posts' => $this->postMapper->getPosts()];
 
         return $tpl->render(array_merge($bindings, $globalBindings));

@@ -20,8 +20,8 @@
 return [
     'index' => [['WebPageMapper'], 'IndexView', ''],
     'about' => [['WebPageMapper'], 'AboutMeView', ''],
-    'login' => [['UserMapper'], 'LoginView', 'LoginController'],
-    'register' => [['UserMapper'], 'RegisterView', 'RegisterController'],
+    'login' => [['WebPageMapper', 'UserMapper'], 'LoginView', 'LoginController'],
+    'register' => [['WebPageMapper', 'UserMapper'], 'RegisterView', 'RegisterController'],
     'account' => [
         'index' => [['UserMapper'], 'AccountView', 'AccountController'],
         'updateInfo' => [['UserMapper'], 'AccountView', 'AccountInfoController']
@@ -33,11 +33,8 @@ return [
         'posts' => [['PostMapper'], 'AdminPostsView', 'AdminController'],
         'post' => [['PostMapper'], 'AdminPostView', 'AdminPostController']
     ],
-    'products' => [['ProductMapper', 'WebPageMapper'], 'ProductsView', 'ProductsController'],
-    'product' => [['ProductMapper', 'WebPageMapper'], 'ProductView', ''],
-    'posts' => [['PostMapper', 'WebPageMapper'], 'PostsView', 'PostsController'],
-    'post' => [['PostMapper', 'WebPageMapper'], 'PostView', ''],
-    'showthreads' => [['ThreadPostMapper'], 'ThreadsView', 'ThreadsController'],
-    'showthread' => [['ThreadPostMapper'], 'ThreadView', 'ThreadController'],
-    'newthread' => [['ThreadPostMapper'], 'NewThreadPostView', 'NewThreadPostController']
+    'products' => [['WebPageMapper', 'ProductMapper'], 'ProductsView', 'ProductsController'],
+    'product' => [['WebPageMapper', 'ProductMapper'], 'ProductView', ''],
+    'posts' => [['WebPageMapper', 'PostMapper'], 'PostsView', 'PostsController'],
+    'post' => [['WebPageMapper', 'PostMapper'], 'PostView', ''],
 ];

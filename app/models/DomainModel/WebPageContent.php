@@ -54,7 +54,7 @@ class WebPageContent
      */
     private function setContent($content)
     {
-        if (strlen($content) < 50)
+        if (strlen($content) < 25)
             throw new \InvalidArgumentException('The page content isn\'t long enough');
 
         $this->content = $content;

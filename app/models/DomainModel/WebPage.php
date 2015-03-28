@@ -18,6 +18,8 @@ class WebPage
      * @var array|  $pageContent  The content of all dynamic elements of a web page
      */
     private $pageName = '',
+            $pageDescription = '',
+            $pageKeywords = '',
             $pageTitle = '',
             $pageContent = [];
 
@@ -59,6 +61,26 @@ class WebPage
             throw new \InvalidArgumentException('The page title should be between 3 and 50 characters long (inclusive).');
 
         $this->pageTitle = $pageTitle;
+    }
+
+    /**
+     * Validates and sets the web page description to an instance variable.
+     *
+     * @param  string $pageDescription   The description of the web page
+     */
+    private function setPageDescription($pageDescription)
+    {
+        $this->pageDescription = $pageDescription;
+    }
+
+    /**
+     * Validates and sets the web page keywords to an instance variable.
+     *
+     * @param  string $pagekeywords      The keywords of the web page
+     */
+    private function setPageKeywords($pageKeywords)
+    {
+        $this->pageKeywords = $pageKeywords;
     }
 
     /**
@@ -116,6 +138,32 @@ class WebPage
     public function getAllPageContent()
     {
         return $this->pageContent;
+    }
+
+    /**
+     * Gets the description associated to the web page.
+     *
+     * The MagicGetter trait is not used here because getting the web page content requires
+     * the use of a generator (which the MagicGetter does not offer).
+     *
+     * @return string  The (hidden) name of the web page
+     */
+    public function getPageDescription()
+    {
+        return $this->pageDescription;
+    }
+
+    /**
+     * Gets the keywords associated to the web page.
+     *
+     * The MagicGetter trait is not used here because getting the web page content requires
+     * the use of a generator (which the MagicGetter does not offer).
+     *
+     * @return string  The (hidden) name of the web page
+     */
+    public function getPageKeywords()
+    {
+        return $this->pageKeywords;
     }
 
     /**

@@ -89,7 +89,7 @@ foreach ($tables as $table)
 $rows = [
     'INSERT INTO LindseysPT.WebPages VALUES
     ("index", "Personal Training | Lindsey\'s PT", "Personal training and health", "personal trainer, pt, fitness"),
-    ("about", "About Me | Lindsey\'s PT", "My name is Lindsey and I am a personal trainer from Southampton.", ""),
+    ("about", "About Me | Lindsey\'s PT", "My name is Lindsey and I am a personal trainer from Southampton.", "Southampton, personal trainer"),
     ("register", "User Registration | Lindsey\'s PT", "Sign up for an account.", ""),
     ("login", "User Login | Lindsey\'s PT", "Log in to your account.", ""),
     ("products", "Products | Lindsey\'s PT", "View all products sold by Lindsey.", ""),
@@ -97,9 +97,7 @@ $rows = [
     ("posts", "Blog Roll | Lindsey\'s PT", "Posts about fitness and health.", ""),
     ("post", " | Lindsey\'s PT", "", ""),
     ("contact", "Contact Me | Lindsey\'s PT", "Contact me with any questions.", ""),
-    ("admin", "Admin - DashBoard | Lindsey\'s PT", "", ""),
-    ("admin/pages", "Admin - Pages | Lindsey\'s PT", "", ""),
-    ("admin/posts", "Admin - Posts | Lindsey\'s PT", "", "");',
+    ("admin", "Admin - DashBoard | Lindsey\'s PT", "", "")',
 
     'INSERT INTO LindseysPT.WebPageContent VALUES
     (NULL, "index", "<p>Content placeholder 1</p>", 1),

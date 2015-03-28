@@ -183,7 +183,8 @@ class PostMapper
     	$insertPostQuery = $this->pdo->prepare('INSERT INTO Posts VALUES (NULL, ?, ?, NOW(), 0, ?)');
         $insertPostQuery->execute([$post->getPostTitle(), $post->getPostBody(), $post->getPostCreatorID()]);
 
-        return $this->pdo->lastInsertId();
+        header("Location: /post/{$this->pdo->lastInsertId()}");
+        die;
     }
 
     public function modifyPost(array $postData, $postID)

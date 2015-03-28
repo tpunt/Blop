@@ -2,6 +2,7 @@
 
 namespace app\views;
 
+use app\models\DataAccessLayer\WebPageMapper;
 use app\models\DataAccessLayer\UserMapper;
 
 /**
@@ -39,8 +40,8 @@ class AccountView
     /**
      * Contains all of the binding logic in order to render the account.tpl file.
      *
-     * @param array   $globalBindings  The information to be bound to every template.
-     * @return string                  The rendered template.
+     * @param  array  $globalBindings  The information to be bound to every template
+     * @return string                  The rendered template
      */
     public function render(array $globalBindings = [])
     {

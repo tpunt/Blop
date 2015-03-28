@@ -17,23 +17,23 @@ class ProductsView
     /**
      * @var Twig_Environment|null $tplEngine      The instance of the template engine
      * @var string|               $route          The route taken by the application
-     * @var WebPageMapper|null    $pageMapper     The instance of the WebPage data mapper
      * @var ProductMapper|null    $productMapper  The instance of the Product data mapper
+     * @var WebPageMapper|null    $pageMapper     The instance of the WebPage data mapper
      */
     private $tplEngine = null,
             $route = '',
-            $pageMapper = null,
-            $productMapper = null;
+            $productMapper = null,
+            $pageMapper = null;
 
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
      * @param Twig_Environment $tplEngine      The instance of the template engine
      * @param string|          $route          The route taken by the application
-     * @param ProductMapper    $productMapper  The instance of the Product data mapper
      * @param WebPageMapper    $pageMapper     The instance of the WebPage data mapper
+     * @param ProductMapper    $productMapper  The instance of the Product data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, $route, ProductMapper $productMapper, WebPageMapper $pageMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, WebPageMapper $pageMapper, ProductMapper $productMapper)
     {
         $this->tplEngine = $tplEngine;
         $this->route = $route;
@@ -56,6 +56,8 @@ class ProductsView
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
                      'pageTitle' => $webPage->getPageTitle(),
+                     'pageDescription' => $webPage->getPageDescription(),
+                     'pageKeywords' => $webPage->getPageKeywords(),
                      'products' => $this->productMapper->getProducts()];
 
         return $tpl->render(array_merge($bindings, $globalBindings));

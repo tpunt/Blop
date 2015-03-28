@@ -17,23 +17,23 @@ class PostView
     /**
      * @var Twig_Environment|null $tplEngine   The instance of the template engine
      * @var string|               $route       The route taken by the application
-     * @var PostMapper|null       $postMapper  The instance of the Post data mapper
      * @var WebPageMapper|null    $pageMapper  The instance of the WebPage data mapper
+     * @var PostMapper|null       $postMapper  The instance of the Post data mapper
      */
     private $tplEngine = null,
             $route = '',
-            $postMapper = null,
-            $pageMapper = null;
+            $pageMapper = null,
+            $postMapper = null;
 
     /**
      * Assigns the arguments to instance variables to be used by the render() method.
      *
      * @param Twig_Environment $tplEngine   The instance of the template engine
      * @param string|          $route       The route taken by the application
-     * @param PostMapper       $postMapper  The instance of the Post data mapper
      * @param WebPageMapper    $pageMapper  The instance of the WebPage data mapper
+     * @param PostMapper       $postMapper  The instance of the Post data mapper
      */
-    public function __construct(\Twig_Environment $tplEngine, $route, PostMapper $postMapper, WebPageMapper $pageMapper)
+    public function __construct(\Twig_Environment $tplEngine, $route, WebPageMapper $pageMapper, PostMapper $postMapper)
     {
         $this->tplEngine = $tplEngine;
         $this->route = $route;
@@ -56,6 +56,8 @@ class PostView
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
                      'pageTitle' => $webPage->getPageTitle(),
+                     'pageDescription' => $webPage->getPageDescription(),
+                     'pageKeywords' => $webPage->getPageKeywords(),
                      'post' => $this->postMapper->getPostByID($_GET['param2'])]; // don't use superglobal here
 
         return $tpl->render(array_merge($bindings, $globalBindings));

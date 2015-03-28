@@ -51,6 +51,8 @@ class AboutMeView
 
         $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
                      'pageTitle' => $webPage->getPageTitle(),
+                     'pageDescription' => $webPage->getPageDescription(),
+                     'pageKeywords' => $webPage->getPageKeywords(),
                      'pageContent' => $webPage->getPageContent()];
 
         return $tpl->render(array_merge($bindings, $globalBindings));

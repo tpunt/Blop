@@ -139,7 +139,15 @@ class UserMapper
             return;
         }
 
-        $_SESSION['user'] = ['user_id' => $userID];
+        $privilegeLevel = (int) $this->pdo->query(
+            "SELECT privilege_level FROM Users WHERE user_id = {$userID}"
+        )->fetch(\PDO::FETCH_ASSOC)['privilege_level'];
+
+        $_SESSION['user'] = [
+            'user_id' => $userID,
+            'pLevel' => $privilegeLevel
+        ];
+
         header('Location: /');
         die;
     }
