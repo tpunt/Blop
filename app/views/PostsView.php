@@ -54,12 +54,12 @@ class PostsView
 
         $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
-        $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''),
-                     'pLevel' => $_SESSION['user']['pLevel'],
+        $bindings = ['loggedIn' => isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : '',
+                     'pLevel' => isset($_SESSION['user']['pLevel']) ? $_SESSION['user']['pLevel'] : 10,
                      'pageTitle' => $webPage->getPageTitle(),
                      'pageDescription' => $webPage->getPageDescription(),
                      'pageKeywords' => $webPage->getPageKeywords(),
-                     'posts' => $this->postMapper->getPosts(true)];
+                     'posts' => $this->postMapper->getPostsOverview(true, true)];
 
         return $tpl->render(array_merge($bindings, $globalBindings));
     }

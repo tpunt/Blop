@@ -58,7 +58,7 @@ class LoginView
                      'pageTitle' => $webPage->getPageTitle(),
                      'pageDescription' => $webPage->getPageDescription(),
                      'pageKeywords' => $webPage->getPageKeywords(),
-                     'loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : '')];
+                     'loggedIn' => isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''];
 
         return $tpl->render(array_merge($bindings, $globalBindings));
     }

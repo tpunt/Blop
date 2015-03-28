@@ -1,4 +1,4 @@
-<table>
+<table id="pagesTable">
     <tr>
         <th colspan="3" class="th1">Page Name</th>
     </tr>

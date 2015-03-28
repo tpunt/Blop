@@ -49,53 +49,14 @@ class PostMapper
     }
 
     /**
-     * Gets a group of posts corresponding to the range of post ID's specified via pagination.
-     *
-     * @return array  An array of Post objects containing individual post information.
-     */
-    public function getPosts($publishedOnly)
-    {
-        $posts = [];
-
-        if(!$this->pagination)
-            $this->newPagination(1);
-
-        if(!$this->pagination->getValidity())
-            return $posts;
-
-        $from = $this->pagination->getFrom();
-        $perPageNo = $this->pagination->getPerPageNo();
-        $published = (int) $publishedOnly;
-
-        $postsQuery = $this->pdo->query("SELECT post_id, post_title, LEFT(post_content, 50) as excerpt, post_date, user_id
-                                         FROM Posts WHERE published >= {$published} LIMIT {$from}, {$perPageNo}");
-
-        while($p = $postsQuery->fetch(\PDO::FETCH_ASSOC))
-            $posts[] = (
-                new Post($p['post_id'])
-            )->setPostTitle(
-                $p['post_title']
-            )->setPostBody(
-                $p['excerpt']
-            )->setPostCreatorID(
-                $p['user_id']
-            )->setPostDate(
-                new \DateTime($p['post_date'])
-            )->setPublishStatus(
-                $publishedOnly
-            );
-
-        return $posts;
-    }
-
-    /**
      * Gets the overview information of a group of posts corresponding to the range
      * of post ID's specified via pagination.
      *
      * @param  bool  $publishedOnly  Whether to retrieve posts that have been unpublished or not
+     * @param  bool  $withExcerpt    Whether to retrieve and excerpt of the posts or not
      * @return array                 An array of Post objects containing individual post information
      */
-    public function getPostsOverview($publishedOnly)
+    public function getPostsOverview($publishedOnly, $withExcerpt)
     {
         $posts = [];
 
@@ -109,11 +70,14 @@ class PostMapper
         $perPageNo = $this->pagination->getPerPageNo();
         $published = (int) $publishedOnly;
 
-        $postsQuery = $this->pdo->query("SELECT post_id, post_title, post_date, user_id
-                                         FROM Posts WHERE published >= {$published} LIMIT {$from}, {$perPageNo}");
+        $sql = "SELECT post_id, post_title, post_date, published, user_id".
+                ($withExcerpt ? ', LEFT(post_content, 50) as excerpt' : '').
+                " FROM Posts WHERE published >= {$published} LIMIT {$from}, {$perPageNo}";
 
-        while ($p = $postsQuery->fetch(\PDO::FETCH_ASSOC))
-            $posts[] = (
+        $postsQuery = $this->pdo->query($sql);
+
+        while ($p = $postsQuery->fetch(\PDO::FETCH_ASSOC)) {
+            $post = (
                 new Post($p['post_id'])
             )->setPostTitle(
                 $p['post_title']
@@ -122,8 +86,14 @@ class PostMapper
             )->setPostDate(
                 new \DateTime($p['post_date'])
             )->setPublishStatus(
-                $publishedOnly
+                $p['published']
             );
+
+            if (isset($p['excerpt']))
+                $post->setPostBody($p['excerpt']);
+
+            $posts[] = $post;
+        }
 
         return $posts;
     }
@@ -196,7 +166,12 @@ class PostMapper
         }
 
     	$insertPostQuery = $this->pdo->prepare('INSERT INTO Posts VALUES (NULL, ?, ?, NOW(), 0, ?, ?)');
-        $insertPostQuery->execute([$post->getPostTitle(), $post->getPostBody(), (int) $post->getPublishStatus(), $post->getPostCreatorID()]);
+        $insertPostQuery->execute([
+            $post->getPostTitle(),
+            $post->getPostBody(),
+            (int) $post->getPublishStatus(),
+            $post->getPostCreatorID()
+        ]);
 
         if ($publish) {
             header("Location: /post/{$this->pdo->lastInsertId()}");
@@ -219,8 +194,14 @@ class PostMapper
             return;
         }
 
-        $postUpdateQuery = $this->pdo->prepare('UPDATE Posts SET post_title = ?, post_content = ?, published = ? WHERE post_id = ?');
-        $postUpdateQuery->execute([$post->getPostTitle(), $post->getPostBody(), (int) $publish, $post->getPostID()]);
+        $postUpdateQuery = $this->pdo->prepare(
+            'UPDATE Posts SET post_title = ?, post_content = ?, published = ? WHERE post_id = ?'
+        );
+        $postUpdateQuery->execute([
+            $post->getPostTitle(),
+            $post->getPostBody(),
+            (int) $publish, $post->getPostID()
+        ]);
 
         if ($publish) {
             header("Location: /post/{$post->getPostID()}");

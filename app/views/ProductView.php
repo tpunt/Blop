@@ -54,12 +54,12 @@ class ProductView
 
         $tpl = $this->tplEngine->loadTemplate("{$route}.tpl");
 
-        $bindings = ['loggedIn' => (isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : ''), // don't use superglobal here
-                     'pLevel' => $_SESSION['user']['pLevel'],
+        $bindings = ['loggedIn' => isset($_SESSION['user']) ? $_SESSION['user']['user_id'] : '',
+                     'pLevel' => isset($_SESSION['user']['pLevel']) ? $_SESSION['user']['pLevel'] : 10,
                      'pageTitle' => $webPage->getPageTitle(),
                      'pageDescription' => $webPage->getPageDescription(),
                      'pageKeywords' => $webPage->getPageKeywords(),
-                     'product' => $this->productMapper->getProductByID($_GET['param2'])]; // don't use superglobal here
+                     'product' => $this->productMapper->getProductByID($_GET['param2'])];
 
         return $tpl->render(array_merge($bindings, $globalBindings));
     }
