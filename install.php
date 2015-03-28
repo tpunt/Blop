@@ -1,6 +1,7 @@
 <?php
 
 // LindseysPT DB Installation Script
+// Delete this script after installation
 
 // Connection details
 $host = '';
@@ -10,8 +11,7 @@ $pws = '';
 $pdo = new PDO("mysql:host={$host}", $user, $pws);
 
 // Create the database
-if ($pdo->exec('CREATE DATABASE IF NOT EXISTS LindseysPT') == 0)
-        die('Installation failed (on database creation)');
+$pdo->exec('CREATE DATABASE IF NOT EXISTS LindseysPT');
 
 // Create the tables
 $tables = [
@@ -59,7 +59,9 @@ $tables = [
     )ENGINE = InnoDB;',
     'CREATE TABLE IF NOT EXISTS LindseysPT.WebPages (
         web_page VARCHAR(40) NOT NULL PRIMARY KEY,
-        page_title VARCHAR(50) NOT NULL
+        page_title VARCHAR(50) NOT NULL,
+        page_description VARCHAR(255) NOT NULL,
+        page_keywords VARCHAR(255) NOT NULL
     )ENGINE = InnoDB;',
     'CREATE TABLE IF NOT EXISTS LindseysPT.WebPageContent (
         web_content_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -80,27 +82,26 @@ $tables = [
 ];
 
 foreach ($tables as $table)
-    if ($pdo->exec($table) == 0)
-        die('Installation failed (on table creation)');
+    $pdo->exec($table);
 
 // Populate the tables
 
 $rows = [
-    'INSERT INTO WebPages VALUES
-    ("index", "Personal Training | Lindsey\'s PT"),
-    ("about", "About Me | Lindsey\'s PT"),
-    ("register", "User Registration | Lindsey\'s PT"),
-    ("login", "User Login | Lindsey\'s PT"),
-    ("products", "Products | Lindsey\'s PT"),
-    ("product", " | Lindsey\'s PT"),
-    ("posts", "Blog Roll | Lindsey\'s PT"),
-    ("post", " | Lindsey\'s PT"),
-    ("contact", "Contact Me | Lindsey\'s PT"),
-    ("admin", "Admin - DashBoard | Lindsey\'s PT"),
-    ("admin/pages", "Admin - Pages | Lindsey\'s PT"),
-    ("admin/posts", "Admin - Posts | Lindsey\'s PT");',
+    'INSERT INTO LindseysPT.WebPages VALUES
+    ("index", "Personal Training | Lindsey\'s PT", "Personal training and health", "personal trainer, pt, fitness"),
+    ("about", "About Me | Lindsey\'s PT", "My name is Lindsey and I am a personal trainer from Southampton.", ""),
+    ("register", "User Registration | Lindsey\'s PT", "Sign up for an account.", ""),
+    ("login", "User Login | Lindsey\'s PT", "Log in to your account.", ""),
+    ("products", "Products | Lindsey\'s PT", "View all products sold by Lindsey.", ""),
+    ("product", " | Lindsey\'s PT", "", ""),
+    ("posts", "Blog Roll | Lindsey\'s PT", "Posts about fitness and health.", ""),
+    ("post", " | Lindsey\'s PT", "", ""),
+    ("contact", "Contact Me | Lindsey\'s PT", "Contact me with any questions.", ""),
+    ("admin", "Admin - DashBoard | Lindsey\'s PT", "", ""),
+    ("admin/pages", "Admin - Pages | Lindsey\'s PT", "", ""),
+    ("admin/posts", "Admin - Posts | Lindsey\'s PT", "", "");',
 
-    'INSERT INTO WebPageContent VALUES
+    'INSERT INTO LindseysPT.WebPageContent VALUES
     (NULL, "index", "<p>Content placeholder 1</p>", 1),
     (NULL, "index", "<p>Content placeholder 2</p>", 2),
     (NULL, "index", "<p>Content placeholder 3</p>", 3),
