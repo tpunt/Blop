@@ -1,8 +1,7 @@
 {
-    "name": "tpunt/Blop",
+    "name": "tpunt/blop",
     "type": "cms",
     "description": "A Blogging and Shopping Platform",
-    "version": "0",
     "license": "MIT",
 	"repositories": [
         {
