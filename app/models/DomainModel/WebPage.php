@@ -66,21 +66,27 @@ class WebPage
     /**
      * Validates and sets the web page description to an instance variable.
      *
-     * @param  string $pageDescription   The description of the web page
+     * @param  string $pageDescription  The description of the web page
+     * @return WebPage                  The current instance
      */
-    private function setPageDescription($pageDescription)
+    public function setPageDescription($pageDescription)
     {
         $this->pageDescription = $pageDescription;
+
+        return $this;
     }
 
     /**
      * Validates and sets the web page keywords to an instance variable.
      *
-     * @param  string $pagekeywords      The keywords of the web page
+     * @param  string $pagekeywords  The keywords of the web page
+     * @return WebPage               The current instance
      */
-    private function setPageKeywords($pageKeywords)
+    public function setPageKeywords($pageKeywords)
     {
         $this->pageKeywords = $pageKeywords;
+
+        return $this;
     }
 
     /**

@@ -8,7 +8,7 @@
         <title><!-- {{ pageTitle }} --></title>
 
         <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/global.css" />
-        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/login.css" />
+        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/{{ superRoute }}.css" />
     </head>
     <body>
         {% include 'global/header.tpl' %}

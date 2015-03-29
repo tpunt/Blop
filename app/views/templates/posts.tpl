@@ -8,7 +8,7 @@
         <title>{{ pageTitle }}{{post.getPostTitle }}</title>
 
         <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/global.css" />
-        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/posts.css" />
+        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/{{ superRoute }}.css" />
     </head>
     <body>
         {% include 'global/header.tpl' %}
@@ -22,17 +22,19 @@
             {% else %}
                 {% for post in posts %}
             <section class="postPreview">
-                <p>
-                    pID: {{ post.getPostID }}<br />
-                    pTitle: <a href="{{ siteURI }}/post/{{ post.getPostID }}">{{post.getPostTitle }}</a><br />
-                    pContent: {{ post.getPostBody }}<br />
-                    pDate: {{ post.getPostDate }}<br />
-                    pCreatorID: {{ post.getPostCreatorID }}
-                </p><br />
+                <aside>
+                    Posted on {{ post.getPostDate }}<br />
+                    by Lindsey Downing
+                </aside>
+                <section>
+                    <h3><a href="{{ siteURI }}/post/{{ post.getPostID }}">{{post.getPostTitle }}</a></h3>
+                    {{ post.getPostBody }}
+                </section>
             </section>
                 {% endfor %}
             {% endif %}
         </section>
+        <div class="clearFloat"></div>
 
         {% include 'global/footer.tpl' %}
     </body>

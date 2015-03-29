@@ -8,7 +8,7 @@
         <title>{{ pageTitle }}</title>
 
         <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/global.css" />
-        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/products.css" />
+        <link rel="stylesheet" type="text/css" href="{{ siteURI }}/public/css/{{ superRoute }}.css" />
     </head>
     <body>
         {% include 'global/header.tpl' %}
@@ -17,14 +17,15 @@
             {% if post is empty %} <!-- needed? depends on error handling of no results from PHP -->
             <p>The post ID is invalid.</p>
             {% else %}
-            <section class="product">
-                <p>
-                    pID: {{ post.getPostID }}<br />
-                    pTitle: {{post.getPostTitle }}<br />
-                    pContent: {{ post.getPostBody }}<br />
-                    pDate: {{ post.getPostDate }}<br />
-                    pCreatorID: {{ post.getPostCreatorID }}
-                </p><br />
+            <h1>{{post.getPostTitle }}</h1>
+
+            <p>
+                Post on {{ post.getPostDate }}<br />
+                By Lindsey Downing
+            </p>
+
+            <section>
+                {{ post.getPostBody }}
             </section>
             {% endif %}
         </section>

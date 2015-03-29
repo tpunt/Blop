@@ -66,7 +66,9 @@ class WebPageMapper
             die;
         }
 
-        $page = (new WebPage($page['page_title']))->setPageName($route);
+        $page = (
+            new WebPage($page['page_title'])
+        )->setPageName($route)->setPageDescription($page['page_description'])->setPageKeywords($page['page_keywords']);
 
         $pageContentQuery = $this->pdo->prepare(
             'SELECT web_content_id, content FROM WebPageContent WHERE web_page = ? ORDER BY content_order'
@@ -98,14 +100,14 @@ class WebPageMapper
 
     public function modifyWebPage($page, $postData)
     {
-        if (empty($_POST['pageTitle'])) {
+        if (empty($_POST['pageDescription']) || empty($_POST['pageKeywords']) || empty($_POST['pageTitle'])) {
             header('Location: /admin/pages');
             die;
         }
 
-        $updateTitle = $this->pdo->prepare('UPDATE WebPages SET page_title = ? WHERE web_page = ?');
+        $updateTitle = $this->pdo->prepare('UPDATE WebPages SET page_description = ?, page_keywords = ?, page_title = ? WHERE web_page = ?');
 
-        if (!$updateTitle->execute([$postData['pageTitle'], $page])) {
+        if (!$updateTitle->execute([$postData['pageDescription'], $postData['pageKeywords'], $postData['pageTitle'], $page])) {
             header('Location: /admin/pages');
             die;
         }

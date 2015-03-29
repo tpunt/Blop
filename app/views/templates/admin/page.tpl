@@ -6,6 +6,16 @@
         <input type="text" name="pageTitle" id="pageTitle" value="{{ page.getPageTitle }}" /><br />
     </div>
 
+    <div>
+        <label for="pageDescription">Page Description:</label> 
+        <input type="text" name="pageDescription" id="pageDescription" value="{{ page.getPageDescription }}" /><br />
+    </div>
+
+    <div>
+        <label for="pageKeywords">Page Keywords:</label> 
+        <input type="text" name="pageKeywords" id="pageKeywords" value="{{ page.getPageKeywords }}" /><br />
+    </div>
+
     {% for content in page.getAllPageContent %}
     <div>
         <label for="{{ content.ContentID }}">Section {{ content.ContentID }}</label>
